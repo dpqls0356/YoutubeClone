@@ -1,17 +1,20 @@
-import express from "express";
+import express from "express"
+import morgan from "morgan"
+import globalRouter from "./routers/globalRouter";
+import videoRouter from "./routers/videoRouter";
+import userRouter from "./routers/userRouter";
+// default export의 경우 변수명을 변경해도 상관없음
+const PORT =4001;
+const app =express();
+const logger = morgan("dev");
 
-// app 생성
-const app = express();
-const PORT = 4000;
+app.use(logger);
+app.use("/",globalRouter);
+app.use("/videos",videoRouter);
+app.use("/users",userRouter);
 
-// application 설정
-const handlerHome =(req,res)=>{
-    res.end();
+
+const handlerListening = () =>{
+    console.log(`someone come in  http://localhost:${PORT}`);
 }
-app.get("/",handlerHome)
-
-// app실행
-const handleListening = () => console.log(`Sever listening on port http://localhost:${PORT}`);
-app.listen(PORT,handleListening);
-
-
+app.listen(PORT,handlerListening);

@@ -4,7 +4,7 @@ import globalRouter from "./routers/globalRouter";
 import videoRouter from "./routers/videoRouter";
 import userRouter from "./routers/userRouter";
 // default export의 경우 변수명을 변경해도 상관없음
-const PORT =4001;
+const PORT =4002;
 const app =express();
 const logger = morgan("dev");
 

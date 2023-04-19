@@ -1,5 +1,9 @@
+const userObj= {
+    username:"yebeen",
+    loggedIn:false,
+};
 export const trending = (req,res) =>{
-    return res.render("home",{pageTitle:"Home"});}
+    return res.render("home",{pageTitle:"Home",userObj:userObj});}
 export const edit =(req,res)=>{
     return res.send("Edit Video")
 }

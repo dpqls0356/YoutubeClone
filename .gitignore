@@ -1,1 +1,5 @@
 이론
+/node_modules
+/challenge
+babel.config.json
+package-lock.json

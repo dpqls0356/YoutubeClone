@@ -29,9 +29,17 @@ const videos=[
     }
 ];
 export const trending = (req,res) =>{
-    return res.render("home",{pageTitle:"Home",userObj:userObj,videos});}
-export const edit =(req,res)=>{
-    return res.send("Edit Video")
+    return res.render("home",{pageTitle:"Home",userObj:userObj,videos});
+}
+export const getEdit =(req,res)=>{
+    const {id} = req.params;
+    const video = videos[id-1];
+    return res.render("edit",{pageTitle:`Edit `+video.title,userObj:userObj,video});
+}
+export const postEdit = (req,res)=>{
+    const {id} = req.params;
+    videos[id-1].title = req.body.title;
+    return res.redirect(`/videos/${id}`);
 }
 export const watch=(req,res)=>{
     const {id} = req.params;

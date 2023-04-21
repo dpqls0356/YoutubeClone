@@ -19,6 +19,7 @@
   "homepage": "https://github.com/dpqls0356/YoutubeClone#readme",
   "dependencies": {
     "express": "^4.18.2",
+    "mongoose": "^7.0.4",
     "morgan": "^1.10.0",
     "pug": "^3.0.2"
   },

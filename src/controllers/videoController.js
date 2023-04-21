@@ -1,21 +1,50 @@
 const userObj= {
     username:"yebeen",
-    loggedIn:false,
+    loggedIn:true,
 };
+const videos=[
+    {
+        title : "video1",
+        rating : 3,
+        comments:2,
+        createdAt: "2 minutes ago",
+        views:1,
+        id:1,
+    },
+    {
+        title : "video2",
+        rating : 4,
+        comments:10,
+        createdAt: "10 minutes ago",
+        views:33,
+        id:2,
+    },
+    {
+        title : "video3",
+        rating : 3,
+        comments:16,
+        createdAt: "16 minutes ago",
+        views:51,
+        id:3,
+    }
+];
 export const trending = (req,res) =>{
-    return res.render("home",{pageTitle:"Home",userObj:userObj});}
+    return res.render("home",{pageTitle:"Home",userObj:userObj,videos});}
 export const edit =(req,res)=>{
     return res.send("Edit Video")
 }
 export const watch=(req,res)=>{
-    return res.render("watch",{pageTitle:"Watch"});
+    const {id} = req.params;
+    // const id = req.params
+    const video = videos[id-1];
+    return res.render("watch",{pageTitle:`Watching `+video.title ,userObj:userObj,video});
 };
 export const search=(req,res)=>{
-    return res.send("search");
+    return res.send("search",{pageTitle:"Search",userObj:userObj,videos});
 }
 export const upload=(req,res)=>{
-    return res.send("upload video");
+    return res.send("upload video",{pageTitle:"Upload",userObj:userObj,videos});
 }
 export const deleteVideo=(req,res)=>{
-    return res.send("delete video");
+    return res.send("delete video",{pageTitle:"DeleteVideo",userObj:userObj,videos});
 }

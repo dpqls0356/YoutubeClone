@@ -1,4 +1,8 @@
 extends base.pug
-
+include mixins/video.pug
 block content
-    h1 Watch!
+    //- if video.views==1
+    //-     h3 #{video.views}view
+    //- else    
+    //-     h3 #{video.views} views
+    h3 #{video.views} #{video.views === 1 ? "view":"views" }

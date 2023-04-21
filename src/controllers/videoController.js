@@ -3,13 +3,13 @@ const userObj= {
     username:"yebeen",
     loggedIn:true,
 };
-export const home = (req,res) =>{
-    Video.find({},(error,vidoes)=>{
-
-    });
-    console.log("Hello");
-    return res.render("home",{pageTitle:"Home",userObj:userObj,});
-    // hello출력 후 render가 되기에 logger가 나오고 그 이후에 find가 실행 - callback은 마지막에 함수를 호출
+export const home = async(req,res) =>{
+    try{
+    const videos = await Video.find({});
+    return res.render("home",{pageTitle:"Home",userObj:userObj,videos});
+} catch(error){
+    return res.send("ERROR");
+}
 }
 export const getEdit =(req,res)=>{
     const {id} = req.params;

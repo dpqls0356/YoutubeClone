@@ -50,8 +50,21 @@ export const watch=(req,res)=>{
 export const search=(req,res)=>{
     return res.send("search",{pageTitle:"Search",userObj:userObj,videos});
 }
-export const upload=(req,res)=>{
-    return res.send("upload video",{pageTitle:"Upload",userObj:userObj,videos});
+export const getUpload=(req,res)=>{
+    return res.render("upload",{pageTitle:"Upload",userObj:userObj,videos});
+}
+export const postUpload=(req,res)=>{
+    const {title} = req.body;
+    videos.push({
+        title:title,
+        rating : 0,
+        comments:0,
+        createdAt: "just now",
+        views:0,
+        id:videos.length+1,
+
+    });
+    res.redirect("/");
 }
 export const deleteVideo=(req,res)=>{
     return res.send("delete video",{pageTitle:"DeleteVideo",userObj:userObj,videos});

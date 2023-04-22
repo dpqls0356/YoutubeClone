@@ -1,7 +1,7 @@
 import Video from "../models/video";
 const userObj= {
     username:"yebeen",
-    loggedIn:true,
+    loggedIn:false,
 };
 export const home = async(req,res) =>{
     try{
@@ -31,8 +31,20 @@ export const search=(req,res)=>{
 export const getUpload=(req,res)=>{
     return res.render("upload",{pageTitle:"Upload",userObj:userObj,});
 }
-export const postUpload=(req,res)=>{
-    const {title} = req.body;
+export const postUpload=async(req,res)=>{
+    const {title,description, hashtags} = req.body;
+    const video = new Video({
+        title: title,
+        desrciption: description,
+        createdAt: Date.now(),
+        hashtags:hashtags.split(",").map(word=>`#${word}`),
+        meta:{
+        views:0,
+        rating:0,
+        }
+    })
+    // save -> promise return -> save 작업이 끝날 때까지 기다려함  (doc을 return)
+    await video.save();
     res.redirect("/");
 }
 export const deleteVideo=(req,res)=>{

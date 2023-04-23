@@ -33,19 +33,34 @@ export const getUpload=(req,res)=>{
 }
 export const postUpload=async(req,res)=>{
     const {title,description, hashtags} = req.body;
-    const video = new Video({
-        title: title,
-        desrciption: description,
-        createdAt: Date.now(),
-        hashtags:hashtags.split(",").map(word=>`#${word}`),
-        meta:{
-        views:0,
-        rating:0,
-        }
-    })
-    // save -> promise return -> save 작업이 끝날 때까지 기다려함  (doc을 return)
-    await video.save();
-    res.redirect("/");
+    // const video = new Video({
+    //     title: title,
+    //     desrciption: description,
+    //     createdAt: Date.now(),
+    //     hashtags:hashtags.split(",").map(word=>`#${word}`),
+    //     meta:{
+    //     views:0,
+    //     rating:0,
+    //     }
+    // })
+    // save -> save 작업이 끝날 때까지 기다려함  (doc을 return)
+    // await video.save();
+    try{
+        await Video.create({
+            title: title,
+            desrciption: description,
+            createdAt: Date.now(),
+            hashtags:hashtags.split(",").map(word=>`#${word}`),
+            meta:{
+            views:0,
+            rating:0,
+            }
+        })
+        res.redirect("/");
+    }
+    catch(error){
+        res.end();
+    }
 }
 export const deleteVideo=(req,res)=>{
     return res.send("delete video",{pageTitle:"DeleteVideo",userObj:userObj,videos});

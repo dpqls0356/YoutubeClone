@@ -1,6 +1,8 @@
 extends base.pug
 
 block content
+    if errorMessage 
+        span Error :  #{errorMessage}
     form(method="POST", action = "/videos/upload")
         input(name = "title",required,type="text",placeholder="Write Video Title")
         input(name = "description",required,type="text",placeholder="Write Description")

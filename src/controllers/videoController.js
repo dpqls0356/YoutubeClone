@@ -48,18 +48,13 @@ export const postUpload=async(req,res)=>{
     try{
         await Video.create({
             title: title,
-            desrciption: description,
-            createdAt: Date.now(),
+            description: description,
             hashtags:hashtags.split(",").map(word=>`#${word}`),
-            meta:{
-            views:0,
-            rating:0,
-            }
         })
         res.redirect("/");
     }
     catch(error){
-        res.end();
+        res.render("upload",{pageTitle:"Upload Video",userObj,errorMessage:error._message});
     }
 }
 export const deleteVideo=(req,res)=>{

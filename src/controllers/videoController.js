@@ -4,26 +4,37 @@ const userObj= {
     loggedIn:false,
 };
 export const home = async(req,res) =>{
-    try{
-    const videos = await Video.find({});
+    const videos = await Video.find();
     return res.render("home",{pageTitle:"Home",userObj:userObj,videos});
-} catch(error){
-    return res.send("ERROR");
 }
-}
-export const getEdit =(req,res)=>{
+export const getEdit =async(req,res)=>{
     const {id} = req.params;
-    return res.render("edit",{pageTitle:`Edit `,userObj:userObj});
+    const video = await Video.findById(id);
+    if(!video){
+        return res.render("404",{pageTitle:"video not found", userObj});
+
+    }
+    return res.render("edit",{pageTitle:`Edit ${video.title}`,userObj:userObj,video});
 }
-export const postEdit = (req,res)=>{
+export const postEdit = async(req,res)=>{
     const {id} = req.params;
+    const {title,description,hashtags} = req.body;
+    // const video = await Video.findById(id);
+    if(!(await Video.exist({_id:id}))){
+        return res.render("404",{pageTitle:"video not found", userObj});
+    }
+    // 하나하나 대입해서 save()해도 상관없음
+    await Video.findByIdAndUpdate(id,{title,description,hashtags:hashtags.split(",").map(word=>word.startsWith('#')? word : `#${word}`),
+})
     return res.redirect(`/videos/${id}`);
 }
 export const watch=async(req,res)=>{
     const {id} = req.params;
     // const id = req.params
     const video = await Video.findById(id);
-    console.log(video);
+    if(!video){
+        return res.render("404",{pageTitle:"video not found", userObj});
+    }
     return res.render("watch",{pageTitle:video.title ,userObj:userObj,video});
 };
 export const search=(req,res)=>{
@@ -50,7 +61,7 @@ export const postUpload=async(req,res)=>{
         await Video.create({
             title: title,
             description: description,
-            hashtags:hashtags.split(",").map(word=>`#${word}`),
+            hashtags:hashtags.split(",").map(word=>word.startsWith('#')? word : `#${word}`),
         })
         res.redirect("/");
     }

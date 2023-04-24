@@ -1,4 +1,5 @@
 import Video from "../models/video";
+// import { formatHashtags } from "../models/video";
 const userObj= {
     username:"yebeen",
     loggedIn:false,
@@ -19,14 +20,20 @@ export const getEdit =async(req,res)=>{
 export const postEdit = async(req,res)=>{
     const {id} = req.params;
     const {title,description,hashtags} = req.body;
-    // const video = await Video.findById(id);
-    if(!(await Video.exist({_id:id}))){
+    console.log("adkenas");
+    // const video =await Video.exists({_id:id});
+    if(!(await Video.exists({_id:id}))){
         return res.render("404",{pageTitle:"video not found", userObj});
     }
     // 하나하나 대입해서 save()해도 상관없음
-    await Video.findByIdAndUpdate(id,{title,description,hashtags:hashtags.split(",").map(word=>word.startsWith('#')? word : `#${word}`),
-})
-    return res.redirect(`/videos/${id}`);
+    try{
+        await Video.findByIdAndUpdate(id,{title,description,hashtags:Video.formatHashtags(hashtags),});
+        return res.redirect(`/videos/${id}`);
+    }
+    catch(error){
+        console.log(error+"!!!");
+    }
+
 }
 export const watch=async(req,res)=>{
     const {id} = req.params;
@@ -61,11 +68,12 @@ export const postUpload=async(req,res)=>{
         await Video.create({
             title: title,
             description: description,
-            hashtags:hashtags.split(",").map(word=>word.startsWith('#')? word : `#${word}`),
-        })
+            hashtags:Video.formatHashtags(hashtags),
+            });
         res.redirect("/");
     }
     catch(error){
+        console.log(error);
         res.render("upload",{pageTitle:"Upload Video",userObj,errorMessage:error._message});
     }
 }

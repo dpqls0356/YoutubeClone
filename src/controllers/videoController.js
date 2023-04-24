@@ -77,6 +77,10 @@ export const postUpload=async(req,res)=>{
         res.render("upload",{pageTitle:"Upload Video",userObj,errorMessage:error._message});
     }
 }
-export const deleteVideo=(req,res)=>{
-    return res.send("delete video",{pageTitle:"DeleteVideo",userObj:userObj,videos});
+export const deleteVideo=async(req,res)=>{
+    const {id}= req.params;
+    console.log(id);
+    await Video.findByIdAndDelete(id);
+    // findOneAndDelete({_id:id})줄여쓴 것
+    return res.redirect("/");
 }

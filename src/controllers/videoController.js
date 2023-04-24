@@ -2,10 +2,11 @@ import Video from "../models/video";
 // import { formatHashtags } from "../models/video";
 const userObj= {
     username:"yebeen",
-    loggedIn:false,
+    loggedIn:true,
 };
 export const home = async(req,res) =>{
-    const videos = await Video.find();
+    // asc - 오름차순 가장 오래된 것이 먼저 나옴  // desc - 내림차순 최신순
+    const videos = await Video.find().sort({createdAt:"asc"});
     return res.render("home",{pageTitle:"Home",userObj:userObj,videos});
 }
 export const getEdit =async(req,res)=>{
@@ -44,8 +45,28 @@ export const watch=async(req,res)=>{
     }
     return res.render("watch",{pageTitle:video.title ,userObj:userObj,video});
 };
-export const search=(req,res)=>{
-    return res.send("search",{pageTitle:"Search",userObj:userObj,videos});
+export const search=async(req,res)=>{
+    // keyword를 {}로 감싸지않으면 오류남
+    const {keyword} = req.query;
+    var videos=[];
+    if(keyword){
+        videos = await Video.find({
+            title: {
+            //mongoDB의 검색엔진덕분! 
+            // keyword를 포함한 데이터 ( i = 대소문자 구분 안함 )
+                $regex:new RegExp("keyword","i"),
+            //    keyword로 시작하는 제목을 가진 데이터     
+            //    $regex:new RegExp(`^${keyword}`,"i"),
+
+            //    keyword로 끝나는 제목을 가진 데이터     
+            //    $regex:new RegExp(`${keyword}$`,"i"),
+
+            //    $gt:a a보다 큰 수
+            },
+        });
+    } 
+    return res.render("search",{pageTitle:"Search",userObj:userObj,videos});
+
 }
 export const getUpload=(req,res)=>{
     return res.render("upload",{pageTitle:"Upload",userObj:userObj,});

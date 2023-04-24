@@ -1,9 +1,7 @@
 extends base.pug
 include mixins/video.pug
 block content
-    //- if video.views==1
-    //-     h3 #{video.views}view
-    //- else    
-    //-     h3 #{video.views} views
-    h3 #{video.views} #{video.views === 1 ? "view":"views" }
+    div
+        p=video.dscription
+        small=video.createdAt
     a(href=`${video.id}/edit`) Edit Video &rarr;

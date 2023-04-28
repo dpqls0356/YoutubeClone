@@ -1,5 +1,9 @@
-export const join = (req,res) => {
-    return res.send("join");
+import { userObj } from "./videoController";
+export const getJoin = (req,res) => {
+    return res.render("join",{pageTitle:"join",userObj});
+}
+export const postJoin = (req,res)=>{
+    return res.end();
 }
 export const edit = (req,res) =>{
     res.send("Edit User");

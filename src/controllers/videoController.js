@@ -1,8 +1,8 @@
 import Video from "../models/video";
 // import { formatHashtags } from "../models/video";
-const userObj= {
+export const userObj= {
     username:"yebeen",
-    loggedIn:true,
+    loggedIn:false,
 };
 export const home = async(req,res) =>{
     // asc - 오름차순 가장 오래된 것이 먼저 나옴  // desc - 내림차순 최신순

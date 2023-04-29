@@ -21,7 +21,6 @@ export const getEdit =async(req,res)=>{
 export const postEdit = async(req,res)=>{
     const {id} = req.params;
     const {title,description,hashtags} = req.body;
-    console.log("adkenas");
     // const video =await Video.exists({_id:id});
     if(!(await Video.exists({_id:id}))){
         return res.render("404",{pageTitle:"video not found", userObj});
@@ -50,11 +49,11 @@ export const search=async(req,res)=>{
     const {keyword} = req.query;
     var videos=[];
     if(keyword){
-        videos = await Video.find({
+        videos = await Video.find({ 
             title: {
             //mongoDB의 검색엔진덕분! 
             // keyword를 포함한 데이터 ( i = 대소문자 구분 안함 )
-                $regex:new RegExp("keyword","i"),
+                $regex:new RegExp(`${keyword}`,"i"),
             //    keyword로 시작하는 제목을 가진 데이터     
             //    $regex:new RegExp(`^${keyword}`,"i"),
 
@@ -64,7 +63,8 @@ export const search=async(req,res)=>{
             //    $gt:a a보다 큰 수
             },
         });
-    } 
+    }
+    console.log(videos); 
     return res.render("search",{pageTitle:"Search",userObj:userObj,videos});
 
 }

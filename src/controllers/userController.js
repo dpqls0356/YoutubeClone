@@ -9,7 +9,7 @@ export const getJoin = (req,res) => {
 }
 export const postJoin = async(req,res)=>{
     const {name,username,email,password,confirmPassword,location} = req.body;
-    const userExists = await User.find({$or : [{username},{email}]});
+    const userExists = await User.findOne({$or : [{username},{email}]});
     if(userExists){
         return res.status(400).render("join",{pageTitle:"Join",userObj,errorMessage:"This username/email is already taken..."});
     }
@@ -40,9 +40,6 @@ export const postLogin = async(req,res)=>{
     const {username,password}  = req.body;
     //계정 단 한개만 찾아야기에 findOne -> find로 하면 배열로 나와서 51라인 오류 뜸
     const user = await User.findOne({username});
-    const users = await User.find({username});
-    console.log(user);
-    console.log(users);
     if(!user){
         return res.status(400).render("login",{
             pageTitle:"Login",
@@ -60,7 +57,7 @@ export const postLogin = async(req,res)=>{
     else{
         userObj.loggedIn="true";
         userObj.username = username;
-        return res.redirect("/",{pageTitle:"home",userObj});
+        return res.redirect("/");
     }
 }
 export const logout = (req,res)=>{

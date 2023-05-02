@@ -1,9 +1,6 @@
 import Video from "../models/video";
+import { userObj } from "./userController";
 // import { formatHashtags } from "../models/video";
-export const userObj= {
-    username:"yebeen",
-    loggedIn:false,
-};
 export const home = async(req,res) =>{
     // asc - 오름차순 가장 오래된 것이 먼저 나옴  // desc - 내림차순 최신순
     const videos = await Video.find().sort({createdAt:"asc"});
@@ -13,7 +10,7 @@ export const getEdit =async(req,res)=>{
     const {id} = req.params;
     const video = await Video.findById(id);
     if(!video){
-        return res.render("404",{pageTitle:"video not found", userObj});
+        return res.status(404).render("404",{pageTitle:"video not found", userObj});
 
     }
     return res.render("edit",{pageTitle:`Edit ${video.title}`,userObj:userObj,video});
@@ -23,7 +20,7 @@ export const postEdit = async(req,res)=>{
     const {title,description,hashtags} = req.body;
     // const video =await Video.exists({_id:id});
     if(!(await Video.exists({_id:id}))){
-        return res.render("404",{pageTitle:"video not found", userObj});
+        return res.status(404).render("404",{pageTitle:"video not found", userObj});
     }
     // 하나하나 대입해서 save()해도 상관없음
     try{
@@ -40,7 +37,7 @@ export const watch=async(req,res)=>{
     // const id = req.params
     const video = await Video.findById(id);
     if(!video){
-        return res.render("404",{pageTitle:"video not found", userObj});
+        return res.status(404).render("404",{pageTitle:"video not found", userObj});
     }
     return res.render("watch",{pageTitle:video.title ,userObj:userObj,video});
 };
@@ -95,7 +92,7 @@ export const postUpload=async(req,res)=>{
     }
     catch(error){
         console.log(error);
-        res.render("upload",{pageTitle:"Upload Video",userObj,errorMessage:error._message});
+        res.status(400).render("upload",{pageTitle:"Upload Video",userObj,errorMessage:error._message});
     }
 }
 export const deleteVideo=async(req,res)=>{

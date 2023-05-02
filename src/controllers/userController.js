@@ -26,11 +26,10 @@ export const postJoin = async(req,res)=>{
     return res.redirect("/login");
 }
 export const edit = (req,res) =>{
-    res.send("Edit User");
     return res.send("Edit User");
 }
 export const deleteUser = (req,res) =>{
-    res.send("Delete User");
+
     return res.send("Delete User");
 }
 export const getLogin = (req,res)=>{
@@ -61,7 +60,9 @@ export const postLogin = async(req,res)=>{
     }
 }
 export const logout = (req,res)=>{
-    return res.send("logout");
+    userObj.loggedIn=false;
+    userObj.username="";
+    return res.redirect('/');
 }
 export const see=(req,res)=>{
     return res.send("see");

@@ -1,26 +1,26 @@
 import Video from "../models/video";
-import { userObj } from "./userController";
+
 // import { formatHashtags } from "../models/video";
 export const home = async(req,res) =>{
     // asc - 오름차순 가장 오래된 것이 먼저 나옴  // desc - 내림차순 최신순
     const videos = await Video.find().sort({createdAt:"asc"});
-    return res.render("home",{pageTitle:"Home",userObj:userObj,videos});
+    return res.render("home",{pageTitle:"Home",videos});
 }
 export const getEdit =async(req,res)=>{
     const {id} = req.params;
     const video = await Video.findById(id);
     if(!video){
-        return res.status(404).render("404",{pageTitle:"video not found", userObj});
+        return res.status(404).render("404",{pageTitle:"video not found", });
 
     }
-    return res.render("edit",{pageTitle:`Edit ${video.title}`,userObj:userObj,video});
+    return res.render("edit",{pageTitle:`Edit ${video.title}`,video});
 }
 export const postEdit = async(req,res)=>{
     const {id} = req.params;
     const {title,description,hashtags} = req.body;
     // const video =await Video.exists({_id:id});
     if(!(await Video.exists({_id:id}))){
-        return res.status(404).render("404",{pageTitle:"video not found", userObj});
+        return res.status(404).render("404",{pageTitle:"video not found", });
     }
     // 하나하나 대입해서 save()해도 상관없음
     try{
@@ -37,9 +37,9 @@ export const watch=async(req,res)=>{
     // const id = req.params
     const video = await Video.findById(id);
     if(!video){
-        return res.status(404).render("404",{pageTitle:"video not found", userObj});
+        return res.status(404).render("404",{pageTitle:"video not found", });
     }
-    return res.render("watch",{pageTitle:video.title ,userObj:userObj,video});
+    return res.render("watch",{pageTitle:video.title ,video});
 };
 export const search=async(req,res)=>{
     // keyword를 {}로 감싸지않으면 오류남
@@ -62,11 +62,11 @@ export const search=async(req,res)=>{
         });
     }
     console.log(videos); 
-    return res.render("search",{pageTitle:"Search",userObj:userObj,videos});
+    return res.render("search",{pageTitle:"Search",videos});
 
 }
 export const getUpload=(req,res)=>{
-    return res.render("upload",{pageTitle:"Upload",userObj:userObj,});
+    return res.render("upload",{pageTitle:"Upload",});
 }
 export const postUpload=async(req,res)=>{
     const {title,description, hashtags} = req.body;
@@ -92,7 +92,7 @@ export const postUpload=async(req,res)=>{
     }
     catch(error){
         console.log(error);
-        res.status(400).render("upload",{pageTitle:"Upload Video",userObj,errorMessage:error._message});
+        res.status(400).render("upload",{pageTitle:"Upload Video",errorMessage:error._message});
     }
 }
 export const deleteVideo=async(req,res)=>{

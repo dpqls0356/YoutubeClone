@@ -5,13 +5,15 @@ html(lang="ko")
         title #{pageTitle} | YouTube Clone
     body 
         header
-            if userObj.loggedIn
-                small Hello #{userObj.username}
+            if loggedIn
+                small Hello #{user.name}
             nav 
                 ul
-                    if userObj.loggedIn
+                    if loggedIn 
                         li 
                             a(href="/logout") Logout
+                        li  
+                            a(href="/my-profile") #{user.name}의 Profile
                     else
                         li  
                             a(href="/login") Login

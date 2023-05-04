@@ -1,20 +1,17 @@
 import User from "../models/user";
 import bcrypt from "bcrypt";
-export const userObj= {
-    loggedIn:false,
-    username : "",
-};
+
 export const getJoin = (req,res) => {
-    return res.render("join",{pageTitle:"Join",userObj});
+    return res.render("join",{pageTitle:"Join",});
 }
 export const postJoin = async(req,res)=>{
     const {name,username,email,password,confirmPassword,location} = req.body;
     const userExists = await User.findOne({$or : [{username},{email}]});
     if(userExists){
-        return res.status(400).render("join",{pageTitle:"Join",userObj,errorMessage:"This username/email is already taken..."});
+        return res.status(400).render("join",{pageTitle:"Join",errorMessage:"This username/email is already taken..."});
     }
     if(confirmPassword!==password){
-        return res.render("join",{pageTitle:"Join",userObj,errorMessage:"Password confirmation does not match..."});
+        return res.render("join",{pageTitle:"Join",errorMessage:"Password confirmation does not match..."});
     }
     await User.create({
         name,
@@ -33,7 +30,7 @@ export const deleteUser = (req,res) =>{
     return res.send("Delete User");
 }
 export const getLogin = (req,res)=>{
-    return res.render("login",{pageTitle:"Login",userObj});
+    return res.render("login",{pageTitle:"Login",});
 }
 export const postLogin = async(req,res)=>{
     const {username,password}  = req.body;
@@ -43,25 +40,22 @@ export const postLogin = async(req,res)=>{
         return res.status(400).render("login",{
             pageTitle:"Login",
             errorMessage:"An account with this username does not exists.",
-            userObj
-        });
+                    });
     }
     else if(!(await bcrypt.compare(password,user.password))){
         return res.status(400).render("login",{
             pageTitle:"Login",
             errorMessage:"Wrong password",
-            userObj
-        });
+                    });
     }
     else{
-        userObj.loggedIn="true";
-        userObj.username = username;
+        req.session.loggedIn = true;
+        req.session.user = {user};
         return res.redirect("/");
     }
 }
 export const logout = (req,res)=>{
-    userObj.loggedIn=false;
-    userObj.username="";
+    req.session.loggedIn=false;
     return res.redirect('/');
 }
 export const see=(req,res)=>{

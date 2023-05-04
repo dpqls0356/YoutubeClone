@@ -61,3 +61,16 @@ export const logout = (req,res)=>{
 export const see=(req,res)=>{
     return res.send("see");
 }
+export const startGithubLogin = (req,res)=>{
+    const config = {
+        client_id : "1bc6e3b064534c6069fe",
+        allow_signup : false,
+        scope : "read:user user:email",
+
+    }
+    const params = new URLSearchParams(config).toString();
+    const baseUrl = `https://github.com/login/oauth/authorize`;
+    const finalUrl = `${baseUrl}?${params}`;
+    res.redirect(finalUrl);
+
+}

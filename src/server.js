@@ -2,7 +2,7 @@
 import express, { urlencoded } from "express";
 import morgan from "morgan";
 import session from "express-session";
-import MongoStroe from "connect-mongo";
+import MongoStore from "connect-mongo";
 import rootRouter from "./routers/rootRouter";
 import userRouter from "./routers/userRouter";
 import videoRouter from "./routers/videoRouter";
@@ -23,7 +23,7 @@ app.use(
     resave: false,
     saveUninitialized: false,
     // 서버의 세션을 서버 메모리가 아니라 DB에 저장 시켜 세션의 내용을 영구적으로 기억하도록함
-    store:MongoStroe.create({mongoUrl:process.env.DB_URL}),
+    store:MongoStore.create({mongoUrl:process.env.DB_URL}),
     cookie:{
     }
     })

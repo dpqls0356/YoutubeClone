@@ -63,7 +63,7 @@ export const see=(req,res)=>{
 }
 export const startGithubLogin = (req,res)=>{
     const config = {
-        client_id : "1bc6e3b064534c6069fe",
+        client_id : GH_CLIENT,
         allow_signup : false,
         scope : "read:user user:email",
 
@@ -73,4 +73,26 @@ export const startGithubLogin = (req,res)=>{
     const finalUrl = `${baseUrl}?${params}`;
     res.redirect(finalUrl);
 
+}
+
+export const finishGithubLogin = async(req,res)=>{
+    // github에서 받은 토큰을 접근 토큰으로 변경
+    const baseUrl = "https://github.com/login/oauth/access_token";
+    const config={
+        client_id : process.env.GH_CLIENT,
+        client_secret : process.eventNames.GH_SECRET,
+        code : req.query.code
+    }
+    const params = new URLSearchParams(config).toString();
+    const finalUrl = `${baseUrl}?${params}`;
+    // url를 post하여 데이터를 받음
+    const data = await fetch(finalUrl,{
+        method :"POST",
+        headers:{
+            Accept:"application/json"
+        }
+    })
+    // 받은 데이터 json화
+    const json = await data.json();
+    console.log(json);
 }

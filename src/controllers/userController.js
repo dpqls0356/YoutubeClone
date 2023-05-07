@@ -154,14 +154,20 @@ export const postEdit = async(req,res)=>{
         body:{name,email,location}
     } = req;
 
-    
+   const emailExists = await User.findOne({_id:{$ne:_id},email:email});
+   const nameExists = await User.findOne({_id:{$ne:_id},name:name});
+   if(emailExists){
+    return res.render("userEdit",{error:"This email is already taken..."});
+   }
+   else if(nameExists){
+    return res.render("userEdit",{error:"This name is already taken..."});
+   }
    const updatedUser = await User.findByIdAndUpdate({_id:_id},{
         name:name,
         email:email,
         location:location,
     },{new:true});
-
-
+    console.log(updatedUser);
     // 세션 업데이트1
     // req.session.user={
     //     ...req.session.user,

@@ -23,8 +23,11 @@ export const postJoin = async(req,res)=>{
     });
     return res.redirect("/login");
 }
-export const edit = (req,res) =>{
-    return res.send("Edit User");
+export const getEdit = (req,res) =>{
+    return res.render("userEdit",{pageTitle:"Edit"});
+}
+export const postEdit = (req,res)=>{
+    return res.send("edit");
 }
 export const deleteUser = (req,res) =>{
 
@@ -56,7 +59,7 @@ export const postLogin = async(req,res)=>{
     }
 }
 export const logout = (req,res)=>{
-    req.session.destory();
+    req.session.destroy();
     return res.redirect('/');
 }
 export const see=(req,res)=>{

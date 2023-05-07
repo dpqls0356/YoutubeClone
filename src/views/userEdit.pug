@@ -1,0 +1,9 @@
+extends base
+
+
+block content 
+    form(method="POST")
+        input(name = "name", placeholder="edit name",type="text",value=`${user.name}`)
+        input(name = "email",required,type="email",placeholder="edit email",value=`${user.email}`)
+        input(name = "location",type="text",placeholder="edit location",value=`${user.location}`)
+        input(value="Edit",type="submit")

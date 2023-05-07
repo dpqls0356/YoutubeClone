@@ -23,12 +23,6 @@ export const postJoin = async(req,res)=>{
     });
     return res.redirect("/login");
 }
-export const getEdit = (req,res) =>{
-    return res.render("userEdit",{pageTitle:"Edit"});
-}
-export const postEdit = (req,res)=>{
-    return res.send("edit");
-}
 export const deleteUser = (req,res) =>{
 
     return res.send("Delete User");
@@ -78,7 +72,6 @@ export const startGithubLogin = (req,res)=>{
     res.redirect(finalUrl);
 
 }
-
 export const finishGithubLogin = async(req,res)=>{
     // github에서 받은 토큰을 접근 토큰으로 변경
     const baseUrl = "https://github.com/login/oauth/access_token";
@@ -146,4 +139,37 @@ export const finishGithubLogin = async(req,res)=>{
     else{
         return res.redirect("/login");
     }
+}
+export const getEdit = (req,res) =>{
+    return res.render("userEdit",{pageTitle:"Edit"});
+}
+export const postEdit = async(req,res)=>{
+    // const id = req.session.user._id;
+    // const {name,email,location} = req.body;
+    // 한번에 쓰기
+    const {
+        session:{
+            user:{_id},
+        },
+        body:{name,email,location}
+    } = req;
+
+    
+   const updatedUser = await User.findByIdAndUpdate({_id:_id},{
+        name:name,
+        email:email,
+        location:location,
+    },{new:true});
+
+
+    // 세션 업데이트1
+    // req.session.user={
+    //     ...req.session.user,
+    //     name,
+    //     email,
+    //     location
+    // }
+    // 세션 업데이트2
+    req.session.user=updatedUser;
+    return res.redirect("/");
 }

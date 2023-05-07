@@ -141,7 +141,7 @@ export const finishGithubLogin = async(req,res)=>{
     }
 }
 export const getEdit = (req,res) =>{
-    return res.render("userEdit",{pageTitle:"Edit"});
+    return res.render("users/userEdit",{pageTitle:"Edit"});
 }
 export const postEdit = async(req,res)=>{
     // const id = req.session.user._id;
@@ -157,10 +157,10 @@ export const postEdit = async(req,res)=>{
    const emailExists = await User.findOne({_id:{$ne:_id},email:email});
    const nameExists = await User.findOne({_id:{$ne:_id},name:name});
    if(emailExists){
-    return res.render("userEdit",{error:"This email is already taken..."});
+    return res.render("users/userEdit",{error:"This email is already taken..."});
    }
    else if(nameExists){
-    return res.render("userEdit",{error:"This name is already taken..."});
+    return res.render("users/userEdit",{error:"This name is already taken..."});
    }
    const updatedUser = await User.findByIdAndUpdate({_id:_id},{
         name:name,
@@ -178,4 +178,32 @@ export const postEdit = async(req,res)=>{
     // 세션 업데이트2
     req.session.user=updatedUser;
     return res.redirect("/");
+}
+
+export const getChangePw = (req,res)=>{
+    // 깃헙 계정이면 비번 변경 페이지에 접근이 안되게 함
+    // if(req.session.user.socialOnly){
+    //     return res.redirect("/");
+    // }
+    return res.render("users/changePassword",{pageTitle:"Edit - Password"});
+
+}
+export const postChangePw = async(req,res)=>{
+    const {
+        session:{
+            user:{_id}
+        },
+        body:{
+            oldpw,newpw,confirmpw
+        }
+    } = req;
+    if(!(confirmpw===newpw)){
+        return res.status(400).render("users/changePassword",{pageTitle:"Edit - Password",error:"New Password not match..."});
+    }
+    else if(!(await bcrypt.compare(oldpw,req.session.user.password))){
+        return res.status(400).render("users/changePassword",{pageTitle:"Edit - Password",error:"Current Password not match..."});
+    }
+    await User.findOneAndUpdate({_id:_id},{password:await bcrypt.hash(newpw,5)});
+    req.session.user = await User.findById(_id);
+    return res.redirect('/');
 }

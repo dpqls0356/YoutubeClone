@@ -13,7 +13,7 @@ export const getEdit =async(req,res)=>{
         return res.status(404).render("404",{pageTitle:"video not found", });
 
     }
-    return res.render("videoEdit",{pageTitle:`Edit ${video.title}`,video});
+    return res.render("videos/videoEdit",{pageTitle:`Edit ${video.title}`,video});
 }
 export const postEdit = async(req,res)=>{
     const {id} = req.params;
@@ -25,7 +25,7 @@ export const postEdit = async(req,res)=>{
     // 하나하나 대입해서 save()해도 상관없음
     try{
         await Video.findByIdAndUpdate(id,{title,description,hashtags:Video.formatHashtags(hashtags),});
-        return res.redirect(`/videos/${id}`);
+        return res.redirect(`videos/${id}`);
     }
     catch(error){
         console.log(error+"!!!");
@@ -39,7 +39,7 @@ export const watch=async(req,res)=>{
     if(!video){
         return res.status(404).render("404",{pageTitle:"video not found", });
     }
-    return res.render("watch",{pageTitle:video.title ,video});
+    return res.render("videos/watch",{pageTitle:video.title ,video});
 };
 export const search=async(req,res)=>{
     // keyword를 {}로 감싸지않으면 오류남
@@ -62,11 +62,11 @@ export const search=async(req,res)=>{
         });
     }
     console.log(videos); 
-    return res.render("search",{pageTitle:"Search",videos});
+    return res.render("videos/search",{pageTitle:"Search",videos});
 
 }
 export const getUpload=(req,res)=>{
-    return res.render("upload",{pageTitle:"Upload",});
+    return res.render("videos/upload",{pageTitle:"Upload",});
 }
 export const postUpload=async(req,res)=>{
     const {title,description, hashtags} = req.body;

@@ -36,7 +36,7 @@ export const getLogin = (req,res)=>{
 export const postLogin = async(req,res)=>{
     const {username,password}  = req.body;
     //계정 단 한개만 찾아야기에 findOne -> find로 하면 배열로 나와서 51라인 오류 뜸
-    const user = await User.findOne({username});
+    const user = await User.findOne({username,socialOnly:false});
     if(!user){
         return res.status(400).render("login",{
             pageTitle:"Login",
@@ -56,7 +56,7 @@ export const postLogin = async(req,res)=>{
     }
 }
 export const logout = (req,res)=>{
-    req.session.loggedIn=false;
+    req.session.destory();
     return res.redirect('/');
 }
 export const see=(req,res)=>{
@@ -121,17 +121,12 @@ export const finishGithubLogin = async(req,res)=>{
         if(!emailObj){
             return res.redirect("/login");
         }
-        // 깃헙 로그인 가능 + 해당 사이트에 계정이 있는 경우
-        const existingUser = await User.findOne({email:emailObj.email});
-        if(existingUser){
-            req.session.loggedIn = true;
-            req.session.user = existingUser;
-            return res.redirect("/");
-        }
+
+        var user = await User.findOne({email:emailObj.email});
         //  깃헙 계정은 있지만 현재사이트의 계정이 없는 경우
-        else{
-            console.log(userData);
-            const user = await User.create({
+        if(!user){
+            user = await User.create({
+                avatarUrl:userData.avatar_url,
                 name : userData.name,
                 username:userData.login,
                 email:emailObj.email,
@@ -139,10 +134,10 @@ export const finishGithubLogin = async(req,res)=>{
                 password:"",
                 location:userData.location,
             });
+        }
             req.session.loggedIn = true;
             req.session.user = user;
             return res.redirect("/");
-        }
 
     }
     else{

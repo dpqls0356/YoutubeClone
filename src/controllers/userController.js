@@ -99,6 +99,7 @@ export const finishGithubLogin = async(req,res)=>{
     if("access_token" in tokenRequest){
         const { access_token } = tokenRequest;
         const apiUrl = "https://api.github.com";
+        // 유저데이터 불러오기
         const userData = await (
           await fetch(`${apiUrl}/user`, {
             headers: {
@@ -106,15 +107,43 @@ export const finishGithubLogin = async(req,res)=>{
             },
           })
         ).json();
-        const userEmail = await(
+        // 이메일데이터 불러오기
+        const emailData = await(
             await fetch(`${apiUrl}/user/emails`,{
                 headers:{
                     Authorization: `token ${access_token}`,
                 }
             })
         ).json();
-        console.log(userEmail);
-        res.send(userEmail);
+        // 이메일 데이터중 primary, verified true인 값 가져오기
+        const emailObj = emailData.find((email)=>email.primary==true&&email.verified==true);
+        // 깃헙 email이 없는 경우
+        if(!emailObj){
+            return res.redirect("/login");
+        }
+        // 깃헙 로그인 가능 + 해당 사이트에 계정이 있는 경우
+        const existingUser = await User.findOne({email:emailObj.email});
+        if(existingUser){
+            req.session.loggedIn = true;
+            req.session.user = existingUser;
+            return res.redirect("/");
+        }
+        //  깃헙 계정은 있지만 현재사이트의 계정이 없는 경우
+        else{
+            console.log(userData);
+            const user = await User.create({
+                name : userData.name,
+                username:userData.login,
+                email:emailObj.email,
+                socialOnly:true,
+                password:"",
+                location:userData.location,
+            });
+            req.session.loggedIn = true;
+            req.session.user = user;
+            return res.redirect("/");
+        }
+
     }
     else{
         return res.redirect("/login");

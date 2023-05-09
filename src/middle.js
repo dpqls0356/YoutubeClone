@@ -1,3 +1,5 @@
+import multer from "multer";
+
 export const localsMiddleware = (req,res,next)=>{
     console.log("===================================================");
     res.locals.loggedIn = Boolean(req.session.loggedIn);
@@ -23,3 +25,5 @@ export const publicOnlyMiddleware = (req,res,next)=>{
         return next();
     }
 }
+// 사용자가 보낸 파일을 uploads 폴더에 저장
+export const uploadFiles = multer({ dest: "uploads/" });

@@ -141,7 +141,7 @@ export const finishGithubLogin = async(req,res)=>{
     }
 }
 export const getEdit = (req,res) =>{
-    return res.render("users/userEdit",{pageTitle:"Edit"});
+    return res.render("users/profile-edit",{pageTitle:"Edit"});
 }
 export const postEdit = async(req,res)=>{
     // const id = req.session.user._id;
@@ -149,25 +149,25 @@ export const postEdit = async(req,res)=>{
     // 한번에 쓰기
     const {
         session:{
-            user:{_id},
+            user:{_id,avatarUrl},
         },
-        body:{name,email,location}
+        body:{name,email,location},
+        file
     } = req;
-
    const emailExists = await User.findOne({_id:{$ne:_id},email:email});
    const nameExists = await User.findOne({_id:{$ne:_id},name:name});
    if(emailExists){
-    return res.render("users/userEdit",{error:"This email is already taken..."});
+    return res.render("users/profile-edit",{error:"This email is already taken..."});
    }
    else if(nameExists){
-    return res.render("users/userEdit",{error:"This name is already taken..."});
+    return res.render("users/profile-edit",{error:"This name is already taken..."});
    }
    const updatedUser = await User.findByIdAndUpdate({_id:_id},{
+        avatarUrl:file?file.path:avatarUrl,
         name:name,
         email:email,
         location:location,
     },{new:true});
-    console.log(updatedUser);
     // 세션 업데이트1
     // req.session.user={
     //     ...req.session.user,

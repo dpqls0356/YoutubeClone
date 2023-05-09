@@ -5,3 +5,4 @@ babel.config.json
 package-lock.json
 /test
 .env
+/uploads

@@ -1,6 +1,8 @@
 extends ../base.pug
 include ../mixins/video.pug
 block content
+    div 
+        video(src="/"+video.fileUrl,controls)
     div
         p=video.description
         //- ul

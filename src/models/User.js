@@ -8,6 +8,8 @@ const userSchema = new mongoose.Schema({
     name :{type:String, required:true,},
     location:String,
     avatarUrl:String,
+    videos:[{type:mongoose.Schema.Types.ObjectId,ref:"Video"}],
+    // videos는 objectId로 구성된 배열인데 Video model로 연결되어있다.
 });
 
 userSchema.pre('save',async function(){

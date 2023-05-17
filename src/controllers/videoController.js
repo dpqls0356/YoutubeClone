@@ -88,13 +88,16 @@ export const postUpload=async(req,res)=>{
     // save -> save 작업이 끝날 때까지 기다려함  (doc을 return)
     // await video.save();
     try{
-        await Video.create({
+        const newVideo = await Video.create({
             owner:_id,
             fileUrl:file.path,
             title: title,
             description: description,
             hashtags:Video.formatHashtags(hashtags),
             });
+        const user= await User.findById(_id);
+        user.videos.push(newVideo._id);
+        user.save();
         res.redirect("/");
     }
     catch(error){

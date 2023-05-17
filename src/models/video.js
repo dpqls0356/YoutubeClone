@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 //    return hashtags.split(",").map((word)=>word.startsWith('#')? word : `#${word}`);
 // }
 const videoSchema = new mongoose.Schema({
+    owner:{type:mongoose.Schema.Types.ObjectId,required:true,ref:"User"},
     title: {type:String, required:true},
     fileUrl:{type:String,required:true},
     description: {type:String, required:true},

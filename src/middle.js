@@ -3,8 +3,8 @@ import multer from "multer";
 export const localsMiddleware = (req,res,next)=>{
     console.log("===================================================");
     res.locals.loggedIn = Boolean(req.session.loggedIn);
-    res.locals.user = req.session.user;
-    // console.log(res.locals);
+    res.locals.user = req.session.user ||{};
+    // console.log(res.locals.user);
     next();
 }
 // 로그인

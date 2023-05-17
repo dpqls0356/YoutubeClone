@@ -13,7 +13,7 @@ html(lang="ko")
                         li 
                             a(href="/users/logout") Logout
                         li  
-                            a(href="/my-profile") #{user.name}의 Profile
+                            a(href=`/users/${user._id}`) #{user.name}의 Profile
                         li
                             a(href="/users/edit") Profile Edit
                         li

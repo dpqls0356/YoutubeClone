@@ -9,7 +9,14 @@ block content
         //-     each hashtag in video.hashtags
         //-         li=hashtag
         small=video.createdAt
+    //- if user
+    //- if video
     div 
-        a(href=`${video.id}/edit`) Edit Video
-    div
-        a(href=`${video.id}/delete`) Delete Video
+        p Uploaded by #{maker.name}
+        a(href="/users/"+maker._id) #{maker.name} 의 프로필
+            
+    if String(user._id)===String(video.owner) 
+        div 
+            a(href=`${video.id}/edit`) Edit Video
+        div
+            a(href=`${video.id}/delete`) Delete Video

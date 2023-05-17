@@ -1,4 +1,5 @@
 import User from "../models/user";
+import Video from "../models/video"
 import fetch from "node-fetch";
 import bcrypt from "bcrypt";
 
@@ -210,8 +211,10 @@ export const postChangePw = async(req,res)=>{
 export const getProfile = async(req,res)=>{
     const {id} = req.params;
     const user = await User.findById(id);
+    const videos = await Video.find({owner:id});
+    console.log(videos);
     if(!user){
         return res.status(404).render("404",{pageTitle:"User not found"});
     }
-    return res.render("users/profile",{pageTitle:`${user.name}의 Profile`,user});
+    return res.render("users/profile",{pageTitle:`${user.name}의 Profile`,user,videos});
 }

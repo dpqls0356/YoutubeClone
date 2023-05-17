@@ -12,10 +12,10 @@ block content
     //- if user
     //- if video
     div 
-        p Uploaded by #{maker.name}
-        a(href="/users/"+maker._id) #{maker.name} 의 프로필
+        p Uploaded by
+            a(href="/users/"+video.owner._id) &nbsp;#{video.owner.name}
             
-    if String(user._id)===String(video.owner) 
+    if String(user._id)===String(video.owner._id) 
         div 
             a(href=`${video.id}/edit`) Edit Video
         div

@@ -14,7 +14,7 @@ block content
     div 
         p Uploaded by
             a(href="/users/"+video.owner._id) &nbsp;#{video.owner.name}
-            
+           
     if String(user._id)===String(video.owner._id) 
         div 
             a(href=`${video.id}/edit`) Edit Video

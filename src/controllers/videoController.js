@@ -9,23 +9,27 @@ export const home = async(req,res) =>{
 export const getEdit =async(req,res)=>{
     const {id} = req.params;
     const video = await Video.findById(id);
-    if(!video){
-        return res.status(404).render("404",{pageTitle:"video not found", });
-
+    const user = req.session.user;
+    if(String(user._id)!==String(video.owner)){
+        return res.status(403).redirect("/");
     }
     return res.render("videos/videoEdit",{pageTitle:`Edit ${video.title}`,video});
 }
 export const postEdit = async(req,res)=>{
     const {id} = req.params;
     const {title,description,hashtags} = req.body;
-    // const video =await Video.exists({_id:id});
+    const video =await Video.findById({_id:id});
+    const user = req.session.user;
+    if(String(user._id)!==String(video.owner)){
+        return res.status(403).redirect("/");
+    }
     if(!(await Video.exists({_id:id}))){
         return res.status(404).render("404",{pageTitle:"video not found", });
     }
     // 하나하나 대입해서 save()해도 상관없음
     try{
         await Video.findByIdAndUpdate(id,{title,description,hashtags:Video.formatHashtags(hashtags),});
-        return res.redirect(`videos/${id}`);
+        return res.redirect(`/videos/${id}`);
     }
     catch(error){
         console.log(error+"!!!");
@@ -63,7 +67,6 @@ export const search=async(req,res)=>{
             },
         });
     }
-    console.log(videos); 
     return res.render("videos/search",{pageTitle:"Search",videos});
 
 }
@@ -72,7 +75,6 @@ export const getUpload=(req,res)=>{
 }
 export const postUpload=async(req,res)=>{
     const {_id}= req.session.user;
-    console.log(_id);
     const {title,description, hashtags} = req.body;
     const file = req.file;
     // const video = new Video({
@@ -107,8 +109,15 @@ export const postUpload=async(req,res)=>{
 }
 export const deleteVideo=async(req,res)=>{
     const {id}= req.params;
-    console.log(id);
+    const video = await Video.findById(id).populate("owner");
+    const user = await User.findById((video.owner._id));
+    console.log(user);
+    if(String(user._id)!==String(video.owner._id)){
+        return res.status(403).redirect("/");
+    }
     await Video.findByIdAndDelete(id);
+    user.videos.splice(user.videos.indexOf(id),1);
+    user.save();
     // findOneAndDelete({_id:id})줄여쓴 것
     return res.redirect("/");
 }

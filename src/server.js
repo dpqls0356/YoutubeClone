@@ -37,6 +37,8 @@ app.use(
 //     })
 // });
 app.use(localsMiddleware);
+// url는 자유롭게 써도 되나 static의 값은 폴더명으로 들어가야한다.
+app.use("/assets",express.static("assets"));
 app.use("/uploads",express.static("uploads"));
 app.use("/",rootRouter);
 app.use("/videos",videoRouter);

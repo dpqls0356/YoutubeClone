@@ -6,3 +6,4 @@ package-lock.json
 /test
 .env
 /uploads
+/assets

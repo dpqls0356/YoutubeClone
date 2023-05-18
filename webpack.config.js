@@ -7,12 +7,16 @@ module.exports={
     plugins: [new MiniCssExtractPlugin({
         filename:"css/style.css",
     })],
+    // 서버 구동시 변경할 예정
+    watch:true,
     entry:"./src/client/js/main.js",
     mode:"development",
     // production
     output:{
         filename:"js/main.js",
         path:path.resolve(__dirname,"assets"),
+        // 이전폴더 삭제
+        clean:true,
     },
     module:{
         rules:[

@@ -1,0 +1,23 @@
+header
+    a(href="/").header__logo
+        i.fab.fa-youtube.fa-2x
+        span YouTube Clone
+    nav 
+        ul
+            li 
+                a(href="/search")
+                    i.i.fas.fa-search
+            if loggedIn 
+                li 
+                    a(href="/users/logout") Logout
+                li  
+                    a(href=`/users/${user._id}`) #{user.name}의 Profile
+                li
+                    a(href="/users/edit") Profile Edit
+                li
+                    a(href="/videos/upload") Upload
+            else
+                li  
+                    a(href="/login") Login
+                li
+                    a(href="/join") Join

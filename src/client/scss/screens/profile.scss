@@ -1,0 +1,21 @@
+.profile-box{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.user-info{
+    margin-top: $header-main-gap;
+    width: 100%;
+    height:200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    img{
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+    }
+    span{
+        margin-top: 15px;
+    }
+}

@@ -1,5 +1,10 @@
 extends ../base
 include ../mixins/video
 block content
-    each video in user.videos
-        +video(video)
+    div.profile-box
+        div.user-info 
+            img(src="/"+user.avatarUrl)
+            span=user.name
+        div.view_small_video
+            each video in user.videos
+                +video(video)

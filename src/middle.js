@@ -27,10 +27,10 @@ export const publicOnlyMiddleware = (req,res,next)=>{
 }
 // 사용자가 보낸 파일을 uploads 폴더에 저장
 export const avatarUpload = multer({ dest: "uploads/avatars/",limits:{
-    fileSize:10000,
+    fileSize:10000000,
 }});
 
 export const videoUpload = multer({dest:"uploads/videos/",limits:{
-    fileSize:1000000,
+    fileSize:10000000,
 
 }});

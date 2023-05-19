@@ -3,7 +3,7 @@ import User from "../models/user";
 // import { formatHashtags } from "../models/video";
 export const home = async(req,res) =>{
     // asc - 오름차순 가장 오래된 것이 먼저 나옴  // desc - 내림차순 최신순
-    const videos = await Video.find().sort({createdAt:"asc"});
+    const videos = await Video.find().sort({createdAt:"asc"}).populate("owner");
     return res.render("home",{pageTitle:"Home",videos});
 }
 export const getEdit =async(req,res)=>{

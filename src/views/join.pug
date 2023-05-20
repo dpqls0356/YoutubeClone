@@ -1,17 +1,19 @@
 extends base
 
 block content
-    if(errorMessage)
-        div #{errorMessage}
-    form(method="POST")
-        input(name="name",type="text",required placeholder="write your name")
-        input(name="username",type="text",required placeholder="write your username")
-        input(name="password",type="password",required placeholder="write your password")
-        input(name="confirmPassword",type="password",required placeholder="confirm your password")
-        input(name="email",type="email".required placeholder="write your email")
-        input(name="location",type="text",required placeholder="write your location")
-        input(type="submit", value="Join")
-    hr
-    div 
-        span Already have an account?
-        a(href="/login") Log in now &rarr;
+    div.form-box.join-box
+        if(errorMessage)
+            div #{errorMessage}
+        form(method="POST")
+            input(name="name",type="text",required placeholder="write your name")
+            input(name="username",type="text",required placeholder="write your username")
+            input(name="password",type="password",required placeholder="write your password")
+            input(name="confirmPassword",type="password",required placeholder="confirm your password")
+            input(name="email",type="email".required placeholder="write your email")
+            input(name="location",type="text",required placeholder="write your location")
+            input(type="submit", value="Join").form-btn
+            div.with-github
+                a(href="/users/github/start") Continue with Github &rarr;
+        div.move-login
+            span Already have an account?
+            a(href="/login") Log in now &rarr;

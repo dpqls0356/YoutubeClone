@@ -2,10 +2,12 @@ extends ../base.pug
 include ../mixins/video.pug
 
 block content
-    form(method="GET")
-        span Search By Title
-        input(type="text" required name="keyword")
-        input(type="submit" value="Search")
-    each video in videos
-         +video(video)
+    div.form-box
+        form(method="GET").search-form
+            label(for = "keyword") Search By Title
+            input(id="keyword" type="text" required name="keyword")
+            input(type="submit" value="Search").form-btn
+    div.view_small_video
+        each video in videos
+            +video(video)
 

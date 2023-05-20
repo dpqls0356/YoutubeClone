@@ -5,10 +5,15 @@
 @import "./components/footer.scss";
 @import "./components/header.scss";
 @import "./components/video.scss";
+@import "./components/form.scss";
 // Screens
 @import "./screens/home.scss";
 @import "./screens/upload.scss";
 @import "./screens/profile.scss";
+@import "./screens/login.scss";
+@import "./screens/join.scss";
+@import "./screens/profile-edit.scss";
+@import "./screens/search.scss";
 // default
 *{
     box-sizing: border-box;

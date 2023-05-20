@@ -10,12 +10,12 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    img{
-        width: 150px;
-        height: 150px;
-        border-radius: 50%;
-    }
     span{
         margin-top: 15px;
     }
+}
+.user-avatar{
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
 }

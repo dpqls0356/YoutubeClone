@@ -1,13 +1,13 @@
 extends ../base.pug
 
 block content
-    div.main_upload
+    div.form-box
         if errorMessage 
             span Error :  #{errorMessage}
-        form(method="POST", action = "/videos/upload" enctype="multipart/form-data").upload-form
+        form(method="POST", action = "/videos/upload" enctype="multipart/form-data")
             label(for="file") Video File
             input(name="video" id="file",required,action="video/*",type="file" ).upload-video
             input(name = "title",required,type="text",placeholder="Write Video Title")
             input(name = "description",required,type="text",placeholder="Write Description")
             input(name = "hashtags",required,type="text",placeholder="Hashtags, separated by comma.")
-            input(value="Upload",type="submit").upload-btn
+            input(value="Upload",type="submit").form-btn

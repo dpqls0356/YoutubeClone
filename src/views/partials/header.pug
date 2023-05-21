@@ -8,14 +8,20 @@ header
                 a(href="/search")
                     i.i.fas.fa-search
             if loggedIn 
-                li 
-                    a(href="/users/logout") Logout
-                li  
-                    a(href=`/users/${user._id}`) #{user.name}의 Profile
                 li
                     a(href="/users/edit") Profile Edit
                 li
                     a(href="/videos/upload") Upload
+                li 
+                    a(href="/users/logout") Logout
+                li  
+                    a(href=`/users/${user._id}`)
+                        if user.avatarUrl ===""
+                            span ☺️
+                        else if(user.socialOnly) 
+                            img(src=user.avatarUrl).header-user-avatar
+                        else
+                            img(src="/"+user.avatarUrl).header-user-avatar
             else
                 li  
                     a(href="/login") Login

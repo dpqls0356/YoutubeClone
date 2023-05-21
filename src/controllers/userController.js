@@ -57,9 +57,7 @@ export const logout = (req,res)=>{
     req.session.destroy();
     return res.redirect('/');
 }
-export const see=(req,res)=>{
-    return res.send("see");
-}
+
 export const startGithubLogin = (req,res)=>{
     const config = {
         client_id : process.env.GH_CLIENT,
@@ -210,7 +208,14 @@ export const postChangePw = async(req,res)=>{
 }
 export const getProfile = async(req,res)=>{
     const {id} = req.params;
-    const user = await User.findById(id).populate("videos");
+    // const user = await User.findById(id).populate("videos");
+    const user = await User.findById(id).populate({
+        path:"videos",
+        populate:{
+            path:"owner",
+            model:"User",
+        }
+    });
     // console.log(user);
     // const videos = await Video.find({owner:id});
     if(!user){

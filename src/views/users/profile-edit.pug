@@ -5,7 +5,10 @@ block content
     div.form-box.profile-edit-box
         if(error)
             div #{error}
-        img(src="/"+user.avatarUrl,width="100px",height="100px").user-avatar
+        if(user.socialOnly) 
+            img(src=user.avatarUrl,width="100px",height="100px").user-avatar
+        else
+            img(src="/"+user.avatarUrl,width="100px",height="100px").user-avatar
         form(method="POST" enctype="multipart/form-data")
             label(for="avatar") Avatar
             input(type="file", id="avatar", name="avatar", accept="image/*")
@@ -16,4 +19,4 @@ block content
 
             input(value="Edit",type="submit").form-btn
         if !user.socialOnly
-            a(href="change-password").move-change-password Change Password &rarr;
+            a(href="change-password").move-change-password Password &rarr;

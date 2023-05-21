@@ -38,9 +38,18 @@ nav{
     ul{
         width: 100%;
         display: flex;
+        li{
+            display: flex;
+            align-items: center;
+        }
         justify-content: space-evenly;
         a{
             // margin-left:10px;
         }
     }
+}
+.header-user-avatar{
+    width: 40px;    
+    height: 40px;   
+    border-radius: 50%;
 }

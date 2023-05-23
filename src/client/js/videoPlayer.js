@@ -1,7 +1,8 @@
 const video = document.querySelector("video");
 const playBtn = document.getElementById("play");
 const muteBtn = document.getElementById("mute"); 
-const time = document.getElementById("time");
+const currenTime = document.getElementById("currenTime");
+const totalTime = document.getElementById("totalTime");
 const volume = document.getElementById("volume");
 
 const handlePlayClick = (e) =>{
@@ -47,9 +48,26 @@ const handelVolumeChange = (event) =>{
     }
     muteBtn.innerText = video.muted?"Unmute":"Mute";
 }
+
+const formatTime = (seconds) =>{
+    // const hour = String(parseInt(seconds/3600)).padStart(2, "0");
+    // const min = String(parseInt((seconds - hour*3600)/60)).padStart(2, "0");
+    // const sec = String(parseInt(seconds - hour*3600-min*60)).padStart(2, "0");
+    // return hour+" : "+min+" : "+sec;
+    return new Date(seconds * 1000).toISOString().substring(11, 19)
+}
+const handleLoadedMEtadata = (e)=>{
+    totalTime.innerText = formatTime(video.duration);
+}
+const handleTimeUpdate= (e) =>{
+
+    currenTime.innerText = formatTime(video.currentTime);
+}
 playBtn.addEventListener("click",handlePlayClick);
 muteBtn.addEventListener("click",handleMute);
 // video.addEventListener("pause",handlePause);
 // video.addEventListener("play",handlePlay);
 volume.addEventListener("input",handelVolumeChange);
 // input - 실시간 값 변화 캐치 가능 change - 최종적인 값만 캐치 가능
+video.addEventListener("loadedmetadata",handleLoadedMEtadata);
+video.addEventListener("timeupdate",handleTimeUpdate);

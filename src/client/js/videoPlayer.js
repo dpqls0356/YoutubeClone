@@ -5,6 +5,8 @@ const currenTime = document.getElementById("currenTime");
 const totalTime = document.getElementById("totalTime");
 const volume = document.getElementById("volume");
 const timeline = document.getElementById("timeline");
+const fullScreenBtn = document.getElementById("fullScreen");
+const videoContainer = document.getElementById("videoContainer");
 
 const handlePlayClick = (e) =>{
     if(video.paused){
@@ -77,7 +79,20 @@ window.addEventListener("keydown", function (event) {
         handlePlayClick();
     }
 });
+const handleFullScreen= ()=>{
+    // true에서 버튼을 눌렀다는 것은 나가고싶다는 것 + 나갈 것이니 Full로 변경
+    if(document.fullscreenElement){
+        document.exitFullscreen();
+        fullScreenBtn.innerText="FULL";
+    }
+    else{
+        videoContainer.requestFullscreen();    
+        fullScreenBtn.innerText="EXIT";
+    }
 
+
+
+}
 playBtn.addEventListener("click",handlePlayClick);
 muteBtn.addEventListener("click",handleMute);
 // video.addEventListener("pause",handlePause);
@@ -87,3 +102,4 @@ volume.addEventListener("input",handelVolumeChange);
 video.addEventListener("loadedmetadata",handleLoadedMEtadata);
 video.addEventListener("timeupdate",handleTimeUpdate);
 timeline.addEventListener("input",handleChnageTimeLine);
+fullScreenBtn.addEventListener("click",handleFullScreen);

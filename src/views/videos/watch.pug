@@ -2,8 +2,8 @@ extends ../base.pug
 include ../mixins/video.pug
 block content
     div 
-        video(src="/"+video.fileUrl,controls)
-        input(type="range",width="100vw")
+        video(src="/"+video.fileUrl)
+        input(type='range',step="1",value=0,min="0")#timeline
     div   
         button#play Play 
         button#mute Mute 

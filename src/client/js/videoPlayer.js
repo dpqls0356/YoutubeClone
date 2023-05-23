@@ -4,6 +4,7 @@ const muteBtn = document.getElementById("mute");
 const currenTime = document.getElementById("currenTime");
 const totalTime = document.getElementById("totalTime");
 const volume = document.getElementById("volume");
+const timeline = document.getElementById("timeline");
 
 const handlePlayClick = (e) =>{
     if(video.paused){
@@ -58,11 +59,25 @@ const formatTime = (seconds) =>{
 }
 const handleLoadedMEtadata = (e)=>{
     totalTime.innerText = formatTime(video.duration);
+    timeline.max = Math.floor(video.duration);
 }
 const handleTimeUpdate= (e) =>{
-
     currenTime.innerText = formatTime(video.currentTime);
+    timeline.value = Math.floor(video.currentTime);
+    if(timeline.value === timeline.max){
+        playBtn.innerText=video.paused?"Play":"Pause";
+    }
 }
+const handleChnageTimeLine = (e) =>{
+    const changeTimeline = e.target.value;
+    video.currentTime = changeTimeline;
+}
+window.addEventListener("keydown", function (event) {
+    if (event.code == "Enter") {
+        handlePlayClick();
+    }
+});
+
 playBtn.addEventListener("click",handlePlayClick);
 muteBtn.addEventListener("click",handleMute);
 // video.addEventListener("pause",handlePause);
@@ -71,3 +86,4 @@ volume.addEventListener("input",handelVolumeChange);
 // input - 실시간 값 변화 캐치 가능 change - 최종적인 값만 캐치 가능
 video.addEventListener("loadedmetadata",handleLoadedMEtadata);
 video.addEventListener("timeupdate",handleTimeUpdate);
+timeline.addEventListener("input",handleChnageTimeLine);

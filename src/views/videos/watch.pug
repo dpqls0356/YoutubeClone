@@ -2,19 +2,20 @@ extends ../base.pug
 include ../mixins/video.pug
 block content
     div#videoContainer
-        div 
-            video(src="/"+video.fileUrl)
-            input(type='range',step="1",value=0,min="0")#timeline
-        div   
-            button#play Play 
-            button#mute Mute 
-            div     
-                span#currenTime 00 : 00 : 00
+        video(src="/"+video.fileUrl)
+        div.videoController
+            button#play
+                <i class="fa-solid fa-play play-i"></i> 
+            div.seeTime     
+                span#currenTime 00:00:00
                 span &nbsp; / &nbsp;
-                span#totalTime 00 : 00 : 00
-            input(type='range',min="0",max="1",step="0.1",value=0.5)#volume
-        div     
-            button#fullScreen FULL
+                span#totalTime 00:00:00
+            input(type='range',step="1",value=0,min="0")#timeline
+            input(type='range',min="0",max="1",step="0.1",value=0.5)#volume  
+            button#mute
+                <i class="fa-solid fa-volume-high mute-i"></i> 
+            button#fullScreen
+                <i class="fa-solid fa-expand full-i"></i>
     //- div
     //-     p=video.description
     //-     //- ul
@@ -34,3 +35,4 @@ block content
     //-         a(href=`${video.id}/delete`) Delete Video
 block scripts
     script(src="/assets/js/videoPlayer.js")
+    <script src="https://kit.fontawesome.com/b324382a19.js" crossorigin="anonymous"></script>

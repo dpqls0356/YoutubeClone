@@ -7,17 +7,41 @@ const volume = document.getElementById("volume");
 const timeline = document.getElementById("timeline");
 const fullScreenBtn = document.getElementById("fullScreen");
 const videoContainer = document.getElementById("videoContainer");
-
+const videoController = document.querySelector(".videoController");
+var controlMouseInOutId=null;
+var controlMouseMoveId =null;
 const handlePlayClick = (e) =>{
     if(video.paused){
         // playBtn.innerHTML="Pause"
         video.play();
+        playIcon();
     }
     else{
         // playBtn.innerHTML="Play"
         video.pause();
+        playIcon();
     }
-    playBtn.innerText=video.paused?"Play":"Pause";
+    // playBtn.innerText=video.paused?"Play":"Pause";
+}
+const playIcon = () =>{
+    if(video.paused){
+        document.querySelector(".play-i").classList.add("fa-play");
+        document.querySelector(".play-i").classList.remove("fa-stop");
+    }
+    else{
+        document.querySelector(".play-i").classList.add("fa-stop");
+        document.querySelector(".play-i").classList.remove("fa-play");
+    }
+}
+const muteIcon = () => {
+    if(video.muted){
+        document.querySelector(".mute-i").classList.remove("fa-volume-high");
+        document.querySelector(".mute-i").classList.add("fa-volume-xmark");
+    }
+    else{
+        document.querySelector(".mute-i").classList.remove("fa-volume-xmark");
+        document.querySelector(".mute-i").classList.add("fa-volume-high");
+    }
 }
 // const handlePause = ()=>{
 //     playBtn.innerHTML="Play";
@@ -40,7 +64,7 @@ const handleMute = (e)=>{
         // muteBtn.innerText="UnMute";
         volume.value=0;
     }
-    muteBtn.innerText = video.muted?"Unmute":"Mute";
+    muteIcon();
 }
 const handelVolumeChange = (event) =>{
     videoVolume = event.target.value;
@@ -49,7 +73,10 @@ const handelVolumeChange = (event) =>{
     if(video.muted){
         video.muted =false;
     }
-    muteBtn.innerText = video.muted?"Unmute":"Mute";
+    if(videoVolume === "0"){
+        video.muted=true;
+    }
+    muteIcon();
 }
 
 const formatTime = (seconds) =>{
@@ -67,7 +94,7 @@ const handleTimeUpdate= (e) =>{
     currenTime.innerText = formatTime(video.currentTime);
     timeline.value = Math.floor(video.currentTime);
     if(timeline.value === timeline.max){
-        playBtn.innerText=video.paused?"Play":"Pause";
+        playIcon();
     }
 }
 const handleChnageTimeLine = (e) =>{
@@ -83,16 +110,49 @@ const handleFullScreen= ()=>{
     // true에서 버튼을 눌렀다는 것은 나가고싶다는 것 + 나갈 것이니 Full로 변경
     if(document.fullscreenElement){
         document.exitFullscreen();
-        fullScreenBtn.innerText="FULL";
+        document.querySelector(".full-i").classList.add("fa-expand");
+        document.querySelector(".full-i").classList.remove("fa-compress");
     }
     else{
-        videoContainer.requestFullscreen();    
-        fullScreenBtn.innerText="EXIT";
+        videoContainer.requestFullscreen(); 
+        video.style.height="100%";
+        video.style.width="100%";
+        videoController.style.bottom="10%";
+        document.querySelector(".full-i").classList.add("fa-compress");
+        document.querySelector(".full-i").classList.remove("fa-expand");
     }
 
-
-
 }
+// 마우스가 움직였을 때 inout id가 있으면 비디오에서 나왔다 다시 들어온 거니까
+// id와 타임아웃 걸린 걸 없애줌
+
+// 마우스가 움직였을 때 move id가 있다는 건 그 전에 3초 멈춰있었다가 다시 움직였다는 것이니
+// 타임 아웃을 지우고 id도 지워줌
+const handleMouseMove = () =>{
+    if(controlMouseInOutId){
+        clearTimeout(controlMouseInOutId);
+        controlMouseInOutId=null;
+    }
+    if(controlMouseMoveId){
+        clearTimeout(controlMouseMoveId);
+        controlMouseMoveId=null
+    }
+    videoController.classList.remove("hidden");
+    controlMouseMoveId = setTimeout(hideControl,3000);
+}
+const handleMouseLeave = () =>{
+    controlMouseInOutId = setTimeout(hideControl,3000);
+}
+const hideControl = ()=>{
+    videoController.classList.add("hiddenAnimation");
+    setTimeout(()=>{
+        videoController.classList.add("hidden");
+        videoController.classList.remove("hiddenAnimation");
+    },500);
+}
+const videoControllerH = videoController.clientHeight*1.1;
+// 반드시 단위가 필요하다.... 없으면 작동 안함....
+document.querySelector(".videoController").style.bottom = `${videoControllerH}px`;
 playBtn.addEventListener("click",handlePlayClick);
 muteBtn.addEventListener("click",handleMute);
 // video.addEventListener("pause",handlePause);
@@ -103,3 +163,5 @@ video.addEventListener("loadedmetadata",handleLoadedMEtadata);
 video.addEventListener("timeupdate",handleTimeUpdate);
 timeline.addEventListener("input",handleChnageTimeLine);
 fullScreenBtn.addEventListener("click",handleFullScreen);
+video.addEventListener("mousemove",handleMouseMove);
+video.addEventListener("mouseleave",handleMouseLeave);

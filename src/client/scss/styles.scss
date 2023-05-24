@@ -1,3 +1,4 @@
+
 // Config
 @import "./config/_reset.scss";
 @import "./config/variables.scss";
@@ -14,6 +15,7 @@
 @import "./screens/join.scss";
 @import "./screens/profile-edit.scss";
 @import "./screens/search.scss";
+@import "./screens/watch.scss";
 // default
 *{
     box-sizing: border-box;
@@ -40,4 +42,5 @@ body{
 
 main{
     flex-grow: 1;
+    max-height: max-content;
 }

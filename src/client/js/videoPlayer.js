@@ -153,6 +153,17 @@ const hideControl = ()=>{
 const videoControllerH = videoController.clientHeight*1.1;
 // 반드시 단위가 필요하다.... 없으면 작동 안함....
 document.querySelector(".videoController").style.bottom = `${videoControllerH}px`;
+
+const handleEnded = () =>{
+    // dataset이름 지정시 대문자 안됨
+    // const {videoid }= videoContainer.dataset;
+    const videoid = videoContainer.dataset.videoid;
+    console.log(videoid);
+    fetch(`/api/videos/${videoid}/views`,{
+        method:"POST",
+    })
+}
+
 playBtn.addEventListener("click",handlePlayClick);
 muteBtn.addEventListener("click",handleMute);
 // video.addEventListener("pause",handlePause);
@@ -161,7 +172,8 @@ volume.addEventListener("input",handelVolumeChange);
 // input - 실시간 값 변화 캐치 가능 change - 최종적인 값만 캐치 가능
 video.addEventListener("loadedmetadata",handleLoadedMEtadata);
 video.addEventListener("timeupdate",handleTimeUpdate);
-timeline.addEventListener("input",handleChnageTimeLine);
-fullScreenBtn.addEventListener("click",handleFullScreen);
 video.addEventListener("mousemove",handleMouseMove);
 video.addEventListener("mouseleave",handleMouseLeave);
+video.addEventListener("ended",handleEnded);
+timeline.addEventListener("input",handleChnageTimeLine);
+fullScreenBtn.addEventListener("click",handleFullScreen);

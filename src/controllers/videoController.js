@@ -121,3 +121,17 @@ export const deleteVideo=async(req,res)=>{
     // findOneAndDelete({_id:id})줄여쓴 것
     return res.redirect("/");
 }
+
+export const registerView = async(req,res) =>{
+    console.log("hi");
+    const {id} = req.params;
+    const video = await Video.findById(id);
+    if(video){
+        video.meta.views= video.meta.views+1;
+        await video.save();
+        return res.sendStatus(200);
+    }
+    else{
+        return res.sendStatus(404);
+    }
+}

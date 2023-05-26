@@ -123,7 +123,6 @@ export const deleteVideo=async(req,res)=>{
 }
 
 export const registerView = async(req,res) =>{
-    console.log("hi");
     const {id} = req.params;
     const video = await Video.findById(id);
     if(video){

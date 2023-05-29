@@ -6,7 +6,7 @@ block content
             if(user.socialOnly) 
                 img(src=user.avatarUrl).user-avatar
             else
-                img(src="/"+user.avatarUrl).user-avatar
+                img(src="/"+user.avatarUrl, crossorigin="use-credentials").user-avatar
             span=user.name
         div.view_small_video
             each video in user.videos

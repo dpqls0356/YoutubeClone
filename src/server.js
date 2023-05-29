@@ -13,8 +13,14 @@ const logger = morgan("dev");
 
 app.set("view engine","pug");
 app.set("views",process.cwd()+'/src/views');
-app.use(express.urlencoded({ extended: true }));
 
+app.use((req, res, next) => {
+    res.header("Cross-Origin-Embedder-Policy", "require-corp");
+    res.header("Cross-Origin-Embedder-Policy", "credentialless");
+    res.header("Cross-Origin-Opener-Policy", "same-origin");
+    next();
+  });
+app.use(express.urlencoded({ extended: true }));
 app.use(logger);
 // 세션 id를 express가 자동으로 만들어 브라우저에 보냄
 // 쿠키에 세션 id를 넣어 다음 방문때 그 id를 보여줌

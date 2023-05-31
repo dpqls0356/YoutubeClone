@@ -8,6 +8,11 @@ var video;
 var recorder;
 var mp4Url;
 var thumbnailImg;
+const restartBtn = document.createElement("button");
+restartBtn.innerHTML="Record Again";
+const thumDownloadBtn = document.createElement("button");
+const thumDownloadA = document.createElement("a");
+
 const files ={
     input:"recording.webm",
     output:"output.mp4",
@@ -30,7 +35,16 @@ const init = async() =>{
 
    }
 }
+const handlerestartRecord = () =>{
+    document.getElementById("btnbox").removeChild(restartBtn);
+    document.getElementById("btnbox").removeChild(thumDownloadBtn);
+    startBtn.addEventListener("click",handleStartRecord);
+    startBtn.innerHTML="Start Recording";
+    init();
+}
 const handleStartRecord = () => {
+    thumbnailImg=null;
+    mp4Url=null;
     startBtn.innerHTML= "Stop Recording";
     startBtn.removeEventListener("click",handleStartRecord);
     startBtn.addEventListener("click",handleStopRecord);
@@ -41,7 +55,6 @@ const handleStopRecord = ()=>{
     startBtn.innerText = "Making Recording...";
     startBtn.disabled = true;
     startBtn.removeEventListener("click",handleStopRecord);
-    startBtn.addEventListener("click",handleDownloadRecord);
     recorder.stop();
         // stop시 datavailable event 가 발생된다 이를 잡기위해서는 ondataavailable이 필요
         recorder.ondataavailable = (e) =>{
@@ -84,19 +97,34 @@ const transformWebmToMp4AndMakeThumbnail = async() =>{
     
     // 변환 완료 후에 다운로드 가능하다고 변경
     if(mp4Url){
-        startBtn.innerText = "Download Video";
+        startBtn.innerText = "";
+        const a = document.createElement("a");
+        a.innerHTML="Dowmload Video";
+        // a.href = video;
+        a.href = mp4Url;
+        // 링크이동이 아닌 다운을 위해 추가!
+        // a.download = "MyRecording.webm";
+        a.download = "MyRecording.mp4";
+        startBtn.appendChild(a);
+    }
+    else{
+        // 비디오 생성이 안된다는 알림
     }
     // 썸네일 다운로드 버튼 생성
     if(thumbnailImg){
-        const thumDownloadBtn = document.createElement("button");
-        const thumDownloadA = document.createElement("a");
         thumDownloadBtn.appendChild(thumDownloadA);
         thumDownloadA.href =thumbnailImg;
         thumDownloadA.innerText="Download Thumbnail";
         thumDownloadA.download = "MyThumbnail.jpg";
-        makeVideo.appendChild(thumDownloadBtn);
+        document.getElementById("btnbox").appendChild(thumDownloadBtn);
         startBtn.disabled = false;
     }
+    else{
+        // 썸네일 생성이 안된다는 알림
+    }
+
+    document.getElementById("btnbox").appendChild(restartBtn);
+    restartBtn.addEventListener("click",handlerestartRecord);
 
 
     // 메모리에서 삭제하기 - 속도향상을 위함
@@ -108,21 +136,7 @@ const transformWebmToMp4AndMakeThumbnail = async() =>{
     URL.revokeObjectURL(thumbBlob);
 
 }
-const handleDownloadRecord = async()=>{
-    // 다시시작하느거 버튼만들기..
-    startBtn.innerHTML="Record again";
-    init();
-    startBtn.removeEventListener("click",handleDownloadRecord);
-    startBtn.addEventListener("click",handleStartRecord);
-    const a = document.createElement("a");
-    // a.href = video;
-    a.href = mp4Url;
-    // 링크이동이 아닌 다운을 위해 추가!
-    // a.download = "MyRecording.webm";
-    a.download = "MyRecording.mp4";
-    document.body.appendChild(a);
-    a.click();
-}
+
 init();
 
 startBtn.addEventListener("click",handleStartRecord);

@@ -2,8 +2,9 @@ extends ../base.pug
 
 block content
     div#make-video  
-        video#preview  
-        button#startBtn Start Recorder
+        video#preview
+        div#btnbox  
+            button#startBtn Start Recording
     div.form-box
         if errorMessage 
             span Error :  #{errorMessage}

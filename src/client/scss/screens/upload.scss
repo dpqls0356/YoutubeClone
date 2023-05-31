@@ -1,0 +1,14 @@
+#make-video{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    padding-top: 30px;
+}
+#preview{
+    width: 50%;
+}
+#startBtn{
+    width: 200px;
+    height: 80px;
+}

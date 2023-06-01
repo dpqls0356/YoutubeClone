@@ -15,9 +15,12 @@ form{
     height: 90%;
     display: flex;
     flex-direction: column;
+    &>*{
+        margin-bottom: 15px;
+    }
     label{
         font-size: 15px;
-        margin-bottom: 10px;
+        margin-bottom: 5px;
     }
     input{
         color:white;

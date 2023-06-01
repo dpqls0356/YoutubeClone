@@ -9,9 +9,11 @@ var recorder;
 var mp4Url;
 var thumbnailImg;
 const restartBtn = document.createElement("button");
+restartBtn.classList.add("reStartBtn");
 restartBtn.innerHTML="Record Again";
-const thumDownloadBtn = document.createElement("button");
-const thumDownloadA = document.createElement("a");
+const thumbDownloadBtn = document.createElement("button");
+thumbDownloadBtn.classList.add("thumbDownBtn");
+const thumbDownloadA = document.createElement("a");
 
 const files ={
     input:"recording.webm",
@@ -37,7 +39,7 @@ const init = async() =>{
 }
 const handlerestartRecord = () =>{
     document.getElementById("btnbox").removeChild(restartBtn);
-    document.getElementById("btnbox").removeChild(thumDownloadBtn);
+    document.getElementById("btnbox").removeChild(thumbDownloadBtn);
     startBtn.addEventListener("click",handleStartRecord);
     startBtn.innerHTML="Start Recording";
     init();
@@ -112,11 +114,11 @@ const transformWebmToMp4AndMakeThumbnail = async() =>{
     }
     // 썸네일 다운로드 버튼 생성
     if(thumbnailImg){
-        thumDownloadBtn.appendChild(thumDownloadA);
-        thumDownloadA.href =thumbnailImg;
-        thumDownloadA.innerText="Download Thumbnail";
-        thumDownloadA.download = "MyThumbnail.jpg";
-        document.getElementById("btnbox").appendChild(thumDownloadBtn);
+        thumbDownloadBtn.appendChild(thumbDownloadA);
+        thumbDownloadA.href =thumbnailImg;
+        thumbDownloadA.innerText="Download Thumbnail";
+        thumbDownloadA.download = "MyThumbnail.jpg";
+        document.getElementById("btnbox").appendChild(thumbDownloadBtn);
         startBtn.disabled = false;
     }
     else{

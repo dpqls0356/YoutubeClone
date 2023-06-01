@@ -164,9 +164,12 @@ form {
   display: flex;
   flex-direction: column;
 }
+form > * {
+  margin-bottom: 15px;
+}
 form label {
   font-size: 15px;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 }
 form input {
   color: white;
@@ -198,6 +201,36 @@ form > div:nth-child(2) {
   border-top: 1px solid rgba(182, 182, 182, 0.614);
   padding-top: 20px;
   margin-top: 20px;
+}
+
+#make-video {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+  padding-top: 30px;
+}
+
+#preview {
+  width: 50%;
+}
+
+#btnbox {
+  padding-top: 50px;
+  display: flex;
+  justify-content: center;
+  width: 50%;
+}
+#btnbox button {
+  margin: 0px 10px 0px 10px;
+  padding: 10px 10px;
+  border-radius: 10px;
+  background-color: white;
+  font-size: 15px;
+  font-weight: 500;
+  color: #FF0000;
+  width: 120px;
+  height: 60px;
 }
 
 .profile-box {

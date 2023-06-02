@@ -16,6 +16,16 @@ block content
                 <i class="fa-solid fa-volume-high mute-i"></i> 
             button#fullScreen
                 <i class="fa-solid fa-expand full-i"></i>
+    if loggedIn 
+        div#commentContainer
+            form.video_comment-form#commentForm
+                input(type="text" name="comment" placeholder="write comment")
+                input(type="submit" value="send")
+    div#video_comments
+        ul  
+            li="test"
+            each comment in video.comments
+                li=comment.text
     //- div
     //-     p=video.description
     //-     //- ul
@@ -35,4 +45,5 @@ block content
     //-         a(href=`${video.id}/delete`) Delete Video
 block scripts
     script(src="/assets/js/videoPlayer.js")
+    script(src="/assets/js/commentSection.js")
     <script src="https://kit.fontawesome.com/b324382a19.js" crossorigin="anonymous"></script>

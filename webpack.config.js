@@ -2,7 +2,7 @@
 // output = 처리 결과 - filename (처리하여 생성된 파일명) /  path (파일이 저장될 장소, 절대경로가 필요)
 const path = require("path");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-
+const BASE_JS = "./src/client/js/";
 module.exports={
     plugins: [new MiniCssExtractPlugin({
         filename:"css/style.css",
@@ -10,9 +10,10 @@ module.exports={
     // 서버 구동시 변경할 예정
     watch:true,
     entry:{
-        main:"./src/client/js/main.js",
-        videoPlayer : "./src/client/js/videoPlayer.js",
-        recorder : "./src/client/js/recorder.js",
+        main:BASE_JS+"main.js",
+        videoPlayer : BASE_JS+"videoPlayer.js",
+        recorder : BASE_JS+"recorder.js",
+        commentSection:BASE_JS+"commentSection.js",
     },
     mode:"development",
     // production

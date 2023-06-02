@@ -1,5 +1,6 @@
 import Video from "../models/video";
 import User from "../models/user";
+import Comment from "../models/Comment";
 // import { formatHashtags } from "../models/video";
 export const home = async(req,res) =>{
     // asc - 오름차순 가장 오래된 것이 먼저 나옴  // desc - 내림차순 최신순
@@ -11,6 +12,7 @@ export const getEdit =async(req,res)=>{
     const video = await Video.findById(id);
     const user = req.session.user;
     if(String(user._id)!==String(video.owner)){
+        req.flash("error","Not authorized");
         return res.status(403).redirect("/");
     }
     return res.render("videos/videoEdit",{pageTitle:`Edit ${video.title}`,video});
@@ -115,6 +117,7 @@ export const deleteVideo=async(req,res)=>{
     const user = await User.findById((video.owner._id));
     console.log(user);
     if(String(user._id)!==String(video.owner._id)){
+        req.flash("error","Not authorized");
         return res.status(403).redirect("/");
     }
     await Video.findByIdAndDelete(id);
@@ -135,4 +138,25 @@ export const registerView = async(req,res) =>{
     else{
         return res.sendStatus(404);
     }
+}
+export const addComment = async(req,res) =>{
+    // request를 보내면서 쿠키를 보내기에 session에 접근 가능
+    const videoId = req.params.id;
+    const user = req.session.user;
+    const comment = req.body.comment;
+
+    const video = await Video.findById(videoId).populate("comments").populate("owner");
+
+    if(!video){
+        return res.sendStatus(404);
+    }
+    const commentDB = await Comment.create({
+        text : comment,
+        owner:user._id,
+        video:videoId,
+    })
+    video.comments.push(commentDB._id);
+    video.save();
+console.log(video.comments);
+    return res.sendStatus(201);
 }

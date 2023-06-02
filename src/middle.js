@@ -13,12 +13,14 @@ export const protectorMiddleware = (req,res,next) =>{
         return next();   
     }    
     else{
+        req.flash("error","Not authorized");
         return res.redirect("/login");
     }
 }
 // 비로그인
 export const publicOnlyMiddleware = (req,res,next)=>{
     if(req.session.loggedIn){
+        req.flash("error","Not authorized");
         return res.redirect("/");
     }
     else{

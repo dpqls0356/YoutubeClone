@@ -14,7 +14,8 @@ const videoSchema = new mongoose.Schema({
     meta:{
         views:{type:Number, default:0,required:true},
         rating:{type:Number, default:0,required:true},
-    }
+    },
+    comments:[{type:mongoose.Schema.Types.ObjectId,ref:"Comment"}],
 });
 // 방법1
 // videoSchema.pre('save', async function(){

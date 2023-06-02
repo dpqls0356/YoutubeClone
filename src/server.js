@@ -2,6 +2,7 @@
 import express, { urlencoded } from "express";
 import morgan from "morgan";
 import session from "express-session";
+import flash from "express-flash";
 import MongoStore from "connect-mongo";
 import rootRouter from "./routers/rootRouter";
 import userRouter from "./routers/userRouter";
@@ -20,7 +21,13 @@ app.use((req, res, next) => {
     res.header("Cross-Origin-Opener-Policy", "same-origin");
     next();
   });
+// 이 미들웨어 덕분에 form 통해 오는 데이터를 서버가 이해
 app.use(express.urlencoded({ extended: true }));
+// feach로 들어오는 text 데이터 이해를 위함
+app.use(express.text({extneds:true}));
+// feach로 들어오는 json 데이터 이해를 위함 - > string을 json화 해줌
+app.use(express.json());
+
 app.use(logger);
 // 세션 id를 express가 자동으로 만들어 브라우저에 보냄
 // 쿠키에 세션 id를 넣어 다음 방문때 그 id를 보여줌
@@ -35,7 +42,7 @@ app.use(
     }
     })
 );
-
+app.use(flash());
 // app.use((req,res,next)=>{
 //     console.log("===================================================");
 //     req.sessionStore.all((error,sessions)=>{

@@ -181,9 +181,10 @@ export const postEdit = async(req,res)=>{
 
 export const getChangePw = (req,res)=>{
     // 깃헙 계정이면 비번 변경 페이지에 접근이 안되게 함
-    // if(req.session.user.socialOnly){
-    //     return res.redirect("/");
-    // }
+    if(req.session.user.socialOnly){
+        req.flash("error","Cant change password");
+        return res.redirect("/");
+    }
     return res.render("users/changePassword",{pageTitle:"Edit - Password"});
 
 }
@@ -204,6 +205,7 @@ export const postChangePw = async(req,res)=>{
     }
     await User.findOneAndUpdate({_id:_id},{password:await bcrypt.hash(newpw,5)});
     req.session.user = await User.findById(_id);
+    req.fetch("info","Success Change Your Password");
     return res.redirect('/');
 }
 export const getProfile = async(req,res)=>{
@@ -219,6 +221,7 @@ export const getProfile = async(req,res)=>{
     // console.log(user);
     // const videos = await Video.find({owner:id});
     if(!user){
+
         return res.status(404).render("404",{pageTitle:"User not found"});
     }
     // return res.render("users/profile",{pageTitle:`${user.name}의 Profile`,user,videos});

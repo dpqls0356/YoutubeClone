@@ -23,9 +23,8 @@ block content
                 input(type="submit" value="send")
     div#video_comments
         ul  
-            li="test"
-            each comment in video.comments
-                li=comment.text
+            each comment in video.comments.reverse()
+                li.video_comment(data-commentid=`${comment.id}`) #{comment.text}
     //- div
     //-     p=video.description
     //-     //- ul

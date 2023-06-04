@@ -4,6 +4,8 @@ import Comment from "../models/Comment";
 // import { formatHashtags } from "../models/video";
 export const home = async(req,res) =>{
     // asc - 오름차순 가장 오래된 것이 먼저 나옴  // desc - 내림차순 최신순
+    // 하 pug에서 데이터를 쓰려면 render하면서 보내줘야하니까 pug 데이터가 뭔가 이상하면 제발 render하는 곳을 보기...
+    // 엄한 곳에서 populate하니까 데이터가 안나오지... 
     const videos = await Video.find().sort({createdAt:"asc"}).populate("owner");
     return res.render("home",{pageTitle:"Home",videos});
 }
@@ -41,7 +43,7 @@ export const postEdit = async(req,res)=>{
 export const watch=async(req,res)=>{
     const {id} = req.params;
     // const id = req.params;
-    const video = await Video.findById(id).populate("owner");
+    const video = await Video.findById(id).populate("owner").populate("comments");
     if(!video){
         return res.status(404).render("404",{pageTitle:"video not found", });
     }
@@ -145,8 +147,7 @@ export const addComment = async(req,res) =>{
     const user = req.session.user;
     const comment = req.body.comment;
 
-    const video = await Video.findById(videoId).populate("comments").populate("owner");
-
+    const video = await Video.findById(videoId);
     if(!video){
         return res.sendStatus(404);
     }
@@ -156,7 +157,8 @@ export const addComment = async(req,res) =>{
         video:videoId,
     })
     video.comments.push(commentDB._id);
-    video.save();
-console.log(video.comments);
-    return res.sendStatus(201);
+    await video.save();
+    // sendStatus와 status는 매우 다르다는 것을 인지하도록...
+    // 백엔드에서 데이터를 보낼때는 json을 사용!
+    return res.status(201).json({ newCommentId: commentDB._id });
 }

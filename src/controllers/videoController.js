@@ -1,6 +1,7 @@
 import Video from "../models/video";
 import User from "../models/user";
 import Comment from "../models/Comment";
+import { async } from "regenerator-runtime";
 // import { formatHashtags } from "../models/video";
 export const home = async(req,res) =>{
     // asc - 오름차순 가장 오래된 것이 먼저 나옴  // desc - 내림차순 최신순
@@ -144,11 +145,15 @@ export const registerView = async(req,res) =>{
 export const addComment = async(req,res) =>{
     // request를 보내면서 쿠키를 보내기에 session에 접근 가능
     const videoId = req.params.id;
-    const user = req.session.user;
+    const currentUser = req.session.user;
     const comment = req.body.comment;
 
     const video = await Video.findById(videoId);
     if(!video){
+        return res.sendStatus(404);
+    }
+    const user = await User.findById(currentUser._id);
+    if(!user){
         return res.sendStatus(404);
     }
     const commentDB = await Comment.create({
@@ -156,9 +161,31 @@ export const addComment = async(req,res) =>{
         owner:user._id,
         video:videoId,
     })
+
     video.comments.push(commentDB._id);
     await video.save();
+    user.comments.push(commentDB._id);
+    await user.save();
     // sendStatus와 status는 매우 다르다는 것을 인지하도록...
     // 백엔드에서 데이터를 보낼때는 json을 사용!
     return res.status(201).json({ newCommentId: commentDB._id });
+}
+export const deleteComment = async(req,res) =>{
+    const currentUser = req.session.user;
+    const commentId = req.params.id;
+    const comment = await Comment.findById(commentId).populate("owner").populate("video");
+    if(String(comment.owner._id) === String(currentUser._id)){
+        const user = await User.findById(comment.owner._id);
+        const video = await Video.findById(comment.video._id);
+        user.comments.pop(commentId);
+        await user.save();
+        video.comments.pop(commentId);
+        await video.save();
+        comment.deleteOne({_id:commentId});
+        return res.sendStatus(204);
+        
+    }
+    else {
+        return res.sendStatus(404);
+    }
 }

@@ -2,12 +2,20 @@ import { async } from "regenerator-runtime";
 
 const videoContainer = document.getElementById("videoContainer");
 const CommentForm = document.getElementById("commentForm");
+let commentDeleteBtn = document.querySelectorAll('.commentDeleteBtn');
 
 const addCommentToComments = (comment,newCommentId) =>{
     const videoComments = document.querySelector("#video_comments ul");
     const newComment = document.createElement('li');
-    newComment.innerHTML=comment;
+    const deleteBtn = document.createElement("button");
+    deleteBtn.classList.add("commentDeleteBtn");
+    deleteBtn.addEventListener("click",handleCommemtDelete);
+    const commentText = document.createElement("div");
+    commentText.innerHTML = comment;
+    deleteBtn.innerHTML="X";
     newComment.dataset.commentid = newCommentId;
+    newComment.appendChild(commentText);
+    newComment.appendChild(deleteBtn);
     videoComments.insertBefore(newComment,videoComments.firstChild);
 }
 const handleCommentSave = async(event)=>{
@@ -34,15 +42,24 @@ const handleCommentSave = async(event)=>{
     if(response.status === 201){
         const {newCommentId} = await response.json();
         addCommentToComments(comment,newCommentId);
-        comment="";
+        comment.value="";
     }
     else{
 
     }
 }
+const handleCommemtDelete = async(e) =>{
+    const commentBox =  e.target.parentElement;
+    const commentID = e.target.parentElement.dataset.commentid;
+    await fetch(`/api/videos/${commentID}/delete`,{
+        method:"DELETE",
+    })
+    commentBox.remove();
+}
 if(CommentForm)
     CommentForm.addEventListener("submit",handleCommentSave);
-
+if(commentDeleteBtn)
+    commentDeleteBtn.forEach((target) => target.addEventListener("click", handleCommemtDelete));
 
 
 

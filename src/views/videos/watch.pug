@@ -24,7 +24,10 @@ block content
     div#video_comments
         ul  
             each comment in video.comments.reverse()
-                li.video_comment(data-commentid=`${comment.id}`) #{comment.text}
+                li.video_comment(data-commentid=`${comment.id}`) 
+                    div #{comment.text}
+                    if String(comment.owner._id)===String(user._id)
+                        button.commentDeleteBtn X
     //- div
     //-     p=video.description
     //-     //- ul

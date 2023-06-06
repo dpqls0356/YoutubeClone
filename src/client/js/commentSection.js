@@ -7,6 +7,7 @@ let commentDeleteBtn = document.querySelectorAll('.commentDeleteBtn');
 const addCommentToComments = (comment,newCommentId) =>{
     const videoComments = document.querySelector("#video_comments ul");
     const newComment = document.createElement('li');
+    const newCommentBox = document.createElement("div");
     const deleteBtn = document.createElement("button");
     deleteBtn.classList.add("commentDeleteBtn");
     deleteBtn.addEventListener("click",handleCommemtDelete);
@@ -14,8 +15,9 @@ const addCommentToComments = (comment,newCommentId) =>{
     commentText.innerHTML = comment;
     deleteBtn.innerHTML="X";
     newComment.dataset.commentid = newCommentId;
-    newComment.appendChild(commentText);
-    newComment.appendChild(deleteBtn);
+    newCommentBox.appendChild(commentText);
+    newCommentBox.appendChild(deleteBtn);
+    newComment.appendChild(newCommentBox);
     videoComments.insertBefore(newComment,videoComments.firstChild);
 }
 const handleCommentSave = async(event)=>{

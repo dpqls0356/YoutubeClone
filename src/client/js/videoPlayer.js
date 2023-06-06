@@ -110,6 +110,7 @@ const handleFullScreen= ()=>{
     // true에서 버튼을 눌렀다는 것은 나가고싶다는 것 + 나갈 것이니 Full로 변경
     if(document.fullscreenElement){
         document.exitFullscreen();
+        video.style.width="80%";
         document.querySelector(".full-i").classList.add("fa-expand");
         document.querySelector(".full-i").classList.remove("fa-compress");
     }
@@ -117,7 +118,10 @@ const handleFullScreen= ()=>{
         videoContainer.requestFullscreen(); 
         video.style.height="100%";
         video.style.width="100%";
-        videoController.style.bottom="10%";
+        const videoControllerH = videoController.clientHeight*1.1;
+        // 반드시 단위가 필요하다.... 없으면 작동 안함....
+        document.querySelector(".videoController").style.bottom = `${videoControllerH}px`;
+        
         document.querySelector(".full-i").classList.add("fa-compress");
         document.querySelector(".full-i").classList.remove("fa-expand");
     }

@@ -48,6 +48,9 @@ export const watch=async(req,res)=>{
     if(!video){
         return res.status(404).render("404",{pageTitle:"video not found", });
     }
+    // const comments  = await Comment.find({ video : video._id}).populate("owner");
+    // const user = await User.find({_id:{$in:comments.owner._id}});
+    // console.log(user);
     return res.render("videos/watch",{pageTitle:video.title ,video});
     // const maker = await User.findById(video.owner);
     // return res.render("videos/watch",{pageTitle:video.title ,video,maker});

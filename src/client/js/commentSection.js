@@ -51,8 +51,9 @@ const handleCommentSave = async(event)=>{
     }
 }
 const handleCommemtDelete = async(e) =>{
-    const commentBox =  e.target.parentElement;
-    const commentID = e.target.parentElement.dataset.commentid;
+    const commentBox =  e.target.parentElement.parentElement;
+    const commentID = e.target.parentElement.parentElement.dataset.commentid;
+
     await fetch(`/api/videos/${commentID}/delete`,{
         method:"DELETE",
     })
@@ -60,8 +61,9 @@ const handleCommemtDelete = async(e) =>{
 }
 if(CommentForm)
     CommentForm.addEventListener("submit",handleCommentSave);
-if(commentDeleteBtn)
+if(commentDeleteBtn){
+    console.log("hi");
     commentDeleteBtn.forEach((target) => target.addEventListener("click", handleCommemtDelete));
-
+}
 
 

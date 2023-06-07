@@ -48,10 +48,10 @@ export const watch=async(req,res)=>{
     if(!video){
         return res.status(404).render("404",{pageTitle:"video not found", });
     }
-    // const comments  = await Comment.find({ video : video._id}).populate("owner");
+    const comments  = await Comment.find({ video : video._id}).populate("owner");
     // const user = await User.find({_id:{$in:comments.owner._id}});
     // console.log(user);
-    return res.render("videos/watch",{pageTitle:video.title ,video});
+    return res.render("videos/watch",{pageTitle:video.title ,video,comments});
     // const maker = await User.findById(video.owner);
     // return res.render("videos/watch",{pageTitle:video.title ,video,maker});
 };
@@ -164,7 +164,6 @@ export const addComment = async(req,res) =>{
         owner:user._id,
         video:videoId,
     })
-
     video.comments.push(commentDB._id);
     await video.save();
     user.comments.push(commentDB._id);
@@ -174,6 +173,7 @@ export const addComment = async(req,res) =>{
     return res.status(201).json({ newCommentId: commentDB._id });
 }
 export const deleteComment = async(req,res) =>{
+    // 여기서 문제 발생함
     const currentUser = req.session.user;
     const commentId = req.params.id;
     const comment = await Comment.findById(commentId).populate("owner").populate("video");

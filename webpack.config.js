@@ -7,15 +7,14 @@ module.exports={
     plugins: [new MiniCssExtractPlugin({
         filename:"css/style.css",
     })],
-    // 서버 구동시 변경할 예정
-    watch:true,
+    // 서버 구동시 변경할 예정 - 변경함
+    // watch:true,
     entry:{
         main:BASE_JS+"main.js",
         videoPlayer : BASE_JS+"videoPlayer.js",
         recorder : BASE_JS+"recorder.js",
         commentSection:BASE_JS+"commentSection.js",
     },
-    mode:"development",
     // production
     output:{
         filename:"js/[name].js",

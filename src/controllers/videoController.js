@@ -1,6 +1,6 @@
 import Video from "../models/video";
 import User from "../models/user";
-import Comment from "../models/Comment";
+import Comment from "../models/comment";
 import { async } from "regenerator-runtime";
 // import { formatHashtags } from "../models/video";
 export const home = async(req,res) =>{

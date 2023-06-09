@@ -2,9 +2,11 @@
 /node_modules
 /challenge
 babel.config.json
+.babelrc
 package-lock.json
 /test
 .env
 /uploads
 /assets
 /build
+Dockerfile

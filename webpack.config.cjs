@@ -22,10 +22,12 @@ module.exports={
         // 이전폴더 삭제
         clean:true,
     },
+    
     module:{
         rules:[
             {
                 test:/\.js$/,
+                exclude: /node_modules/,
                 use:{
                     loader:'babel-loader',
                     options: {
@@ -40,5 +42,8 @@ module.exports={
                 use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"],
             }
         ]
-    }
+    },
+    resolve: {
+        extensions: ['.js']
+      },
 };

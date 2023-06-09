@@ -1,0 +1,8 @@
+이론
+/node_modules
+/challenge
+/test
+.env
+/uploads
+/assets
+/build

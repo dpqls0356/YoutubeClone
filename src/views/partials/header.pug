@@ -21,7 +21,7 @@ header
                         else if(user.socialOnly) 
                             img(src=user.avatarUrl).header-user-avatar
                         else
-                            img(src="/"+user.avatarUrl).header-user-avatar
+                            img(src=user.avatarUrl).header-user-avatar
             else
                 li  
                     a(href="/login") Login

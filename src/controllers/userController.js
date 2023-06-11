@@ -162,7 +162,7 @@ export const postEdit = async(req,res)=>{
     return res.render("users/profile-edit",{error:"This name is already taken..."});
    }
    const updatedUser = await User.findByIdAndUpdate({_id:_id},{
-        avatarUrl:file?file.path:avatarUrl,
+        avatarUrl:file?file.location:avatarUrl,
         name:name,
         email:email,
         location:location,

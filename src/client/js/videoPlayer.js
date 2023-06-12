@@ -162,7 +162,6 @@ const handleEnded = () =>{
     // dataset이름 지정시 대문자 안됨
     // const {videoid }= videoContainer.dataset;
     const videoid = videoContainer.dataset.videoid;
-    console.log(videoid);
     fetch(`/api/videos/${videoid}/views`,{
         method:"POST",
     })
@@ -172,9 +171,20 @@ playBtn.addEventListener("click",handlePlayClick);
 muteBtn.addEventListener("click",handleMute);
 // video.addEventListener("pause",handlePause);
 // video.addEventListener("play",handlePlay);
+
+// input - 실시간 값 변화  캐치 가능 change - 최종적인 값만 캐치 가능
 volume.addEventListener("input",handelVolumeChange);
-// input - 실시간 값 변화 캐치 가능 change - 최종적인 값만 캐치 가능
+
+// local환경에서 실행할 떄
 video.addEventListener("loadedmetadata",handleLoadedMEtadata);
+const isfly = process.env.NODE_ENV === "production";
+if (!isNaN(video.duration)&&isfly) {
+    // duration이 숫자이고 배포사이트일때
+    console.log(video.duration);
+    // 코드 실행 부분
+    handleLoadedMEtadata();
+}
+
 video.addEventListener("timeupdate",handleTimeUpdate);
 video.addEventListener("mousemove",handleMouseMove);
 video.addEventListener("mouseleave",handleMouseLeave);

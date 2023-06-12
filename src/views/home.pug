@@ -1,8 +1,0 @@
-extends base.pug
-include mixins/video.pug
-block content
-        div.view_small_video
-            each video in videos
-                +video(video)
-            else 
-                div Sorry noting found

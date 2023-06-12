@@ -3,7 +3,7 @@ include ../mixins/video.pug
 block content   
     div#watchBox
         div#videoContainer(data-videoid= video._id)
-            video(src="/"+video.fileUrl)
+            video(src=video.fileUrl)
             div.videoController
                 button#play
                     <i class="fa-solid fa-play play-i"></i> 

@@ -32,6 +32,7 @@ const init = async() =>{
     });
     previewVideo.srcObject = stream;
     previewVideo.play();
+//     if (previewVideo !== undefined) { previewVideo.then((_) => {}).catch((error) => {}); }
    }
    catch(err){
 

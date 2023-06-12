@@ -48,7 +48,7 @@ const s3 =  new S3Client({
 const multerUploader = multerS3({
     s3:s3,
     bucket: 'youtube-clone-v1',
-    acl:"public-read",
+    acl:'public-read',
 })
 export const avatarUpload = multer({
     dest: "uploads/avatars/",

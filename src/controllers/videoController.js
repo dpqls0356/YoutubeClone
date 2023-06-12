@@ -98,11 +98,12 @@ export const postUpload=async(req,res)=>{
     // })
     // save -> save 작업이 끝날 때까지 기다려함  (doc을 return)
     // await video.save();
+    const isfly = process.env.NODE_ENV ==="production";
     try{
         const newVideo = await Video.create({
             owner:_id,
-            fileUrl:file.location,
-            thumbUrl:thumb.location,
+            fileUrl:isfly?file.location:file.path,
+            thumbUrl:isfly?thumb.location:thumb.path,
             title: title,
             description: description,
             hashtags:Video.formatHashtags(hashtags),
@@ -121,7 +122,6 @@ export const deleteVideo=async(req,res)=>{
     const {id}= req.params;
     const video = await Video.findById(id).populate("owner");
     const user = await User.findById((video.owner._id));
-    console.log(user);
     if(String(user._id)!==String(video.owner._id)){
         req.flash("error","Not authorized");
         return res.status(403).redirect("/");

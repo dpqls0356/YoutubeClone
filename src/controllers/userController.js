@@ -161,8 +161,9 @@ export const postEdit = async(req,res)=>{
    else if(nameExists){
     return res.render("users/profile-edit",{error:"This name is already taken..."});
    }
+   const isfly = process.env.NODE_ENV ==="production";
    const updatedUser = await User.findByIdAndUpdate({_id:_id},{
-        avatarUrl:file?file.location:avatarUrl,
+        avatarUrl:file?(isfly?file.location:file.path):avatarUrl,
         name:name,
         email:email,
         location:location,

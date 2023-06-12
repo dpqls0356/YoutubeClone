@@ -62,7 +62,6 @@ const handleCommemtDelete = async(e) =>{
 if(CommentForm)
     CommentForm.addEventListener("submit",handleCommentSave);
 if(commentDeleteBtn){
-    console.log("hi");
     commentDeleteBtn.forEach((target) => target.addEventListener("click", handleCommemtDelete));
 }
 

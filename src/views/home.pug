@@ -1,0 +1,28 @@
+extends base.pug
+include mixins/video-category
+block content
+    div.video-category
+        each category in ["전체","게임","음악","뉴스","뷰티 팁","액션 어드벤쳐 게임","요리","만화 영화","최근에 업로드된 영상"]
+            +videoCategory(category)
+    div.side-bar
+        div
+            i(class="fa-solid fa-house")
+            span 홈 
+        div
+            i(class="fa-solid fa-bolt")
+            span shorts
+        div
+            i(class="fa-solid fa-square-check")
+            span 구독
+        div
+            i(class="fa-solid fa-box-archive")
+            span 보관함    
+        div
+            i(class="fa-solid fa-rotate-left")
+            span 시청기록       
+    div.view-thumb
+        if videos 
+            each video in videos
+                +video(video)
+        else 
+            span not found videe...

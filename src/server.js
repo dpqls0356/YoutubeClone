@@ -20,6 +20,7 @@ const handleOpneServer = (req,res,next) =>{
 }
 
 app.use(logger);
+app.use("/assets",express.static("assets"));
 app.use("/",rootRouter);
 app.use("/users",userRouter);
 app.use("/videos",videoRouter);

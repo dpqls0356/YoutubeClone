@@ -1,0 +1,8 @@
+@import "./reset.scss";
+//components
+@import "./components/header.scss";
+//screens
+@import "./screens/home.scss";
+*{
+    box-sizing: border-box;
+}

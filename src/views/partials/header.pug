@@ -1,26 +1,27 @@
 header 
     div.header-col
-        i(class="fa-solid fa-bars")
+        i(class="fa-solid fa-bars fa-xl")
         div.header-logo
-            i(class="fa-brands fa-youtube" style="color: #ff0000;")
-            span Youtube Clone
+            i(class="fa-brands fa-youtube fa-xl" style="color: #ff0000;")
+            p Youtube Clone
     div.header-col
         form.video-search-form
             input(name="videosearch" type="text" placeholder="검색")
             label(for="video-search-btn")
                 i(class="fa-solid fa-magnifying-glass") 
             input(id="video-search-btn" type="submit" style="display:none;")
-    div.header-col
-        if false
+    if true
+        div.header-col.header-login
             button
                 a(href="") 
-                    i(class="fa-solid fa-video")
+                    i(class="fa-xl fa-solid fa-video")
             button
                 a(href="") 
-                    i(class="fa-regular fa-bell")
+                    i(class="fa-xl fa-regular fa-bell")
             button
                 img(src="", alt="")
-        else 
+    else
+        div.header-col.header-not-login 
             button
                 a(href="") Login
             button

@@ -1,0 +1,96 @@
+header{
+    width: 100%;
+    height: 55px;
+    display: flex;
+    align-items: center;
+    padding: 5px 20px;
+}
+.header-col{
+    width: 33%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    &:nth-child(1){
+        &>i{
+            margin-right: 25px;
+        }
+        .header-logo{
+            display: flex;
+            height: 100%;
+            align-items: center;
+            &>i{
+                margin-right: 3px;
+            }
+            &>p{
+                font-size: 1.5em;
+                font-weight: 700;
+            }
+        }
+    }
+    &:nth-child(2){
+        .video-search-form{
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            &>*{
+                border: 1px solid black;
+                height: 40px;
+            }
+            &>input:nth-child(1){
+                padding-left: 20px;
+                width: 90%;
+                border-radius: 1000px;
+            }
+            &>label{
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 10%;
+                border-top-right-radius: 1000px;
+                border-bottom-right-radius: 1000px;
+                background-color: rgb(0, 0, 0);
+                position: absolute;
+                right: 5%;
+                color: white;
+            }
+        }
+    }
+    &:nth-child(3){
+        display: flex;
+        justify-content: flex-end;
+        button{
+            all: unset;
+        }
+        a{
+            text-decoration: none;
+            color: black;
+        }
+    }
+}
+.header-login{
+    a{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 50px;
+        height: 50px;
+    }
+    img{
+        padding: 10px;
+        width:50px;
+        height: 50px;
+        border-radius: 1000px;
+    }
+}
+.header-not-login{
+    font-size: 1em;
+    a{
+        display: block;
+        width: 60px;
+        font-size: 1em;
+        font-weight: 500;
+    }
+}

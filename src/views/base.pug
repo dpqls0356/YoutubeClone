@@ -6,8 +6,10 @@ html(lang="en")
         title YoutubeCloneV2
     body
         include  partials/header
-        main
+        include partials/sidebar.pug
+        main.main
             block content 
-        include partials/footer 
+        include partials/footer
+    block script 
     script(src="https://kit.fontawesome.com/b324382a19.js" crossorigin="anonymous")
     script(src="/assets/js/main.js")

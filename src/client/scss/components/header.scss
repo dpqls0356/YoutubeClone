@@ -9,11 +9,19 @@ header{
     padding: 5px 20px;
 }
 .header-col{
-    width: 33%;
+    width: 25%;
     height: 100%;
     display: flex;
     align-items: center;
-    &:nth-child(1){
+    &:nth-child(2){
+        width: 50%;
+    }
+    &:nth-child(1)>a{
+        text-decoration: none;
+        color: black;
+        display: flex;
+        height: 100%;
+        align-items: center;
         &>i{
             margin-right: 25px;
         }
@@ -39,7 +47,7 @@ header{
             align-items: center;
             position: relative;
             &>*{
-                border: 1px solid black;
+                border: 1px solid #d5d5d5;
                 height: 40px;
             }
             &>input:nth-child(1){
@@ -54,10 +62,10 @@ header{
                 width: 10%;
                 border-top-right-radius: 1000px;
                 border-bottom-right-radius: 1000px;
-                background-color: rgb(0, 0, 0);
+                background-color: #F0F0F0;
                 position: absolute;
                 right: 5%;
-                color: white;
+                color: #9f9f9f;
             }
         }
     }
@@ -93,7 +101,7 @@ header{
     a{
         display: block;
         width: 60px;
-        font-size: 1em;
-        font-weight: 500;
+        font-size: 1.1em;
+        font-weight: 700;
     }
 }

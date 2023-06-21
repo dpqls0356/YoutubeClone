@@ -1,9 +1,11 @@
 @import "./reset.scss";
 //components
 @import "./components/header.scss";
+@import "./components/sidebar.scss";
 @import "./components/footer.scss";
 //screens
 @import "./screens/home.scss";
+@import "./screens/join.scss";
 *{
     box-sizing: border-box;
 }
@@ -18,4 +20,5 @@ main{
     width: 100%;
     flex-grow: 1;
     max-height: max-content;
+    padding-left: 65px;
 }

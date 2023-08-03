@@ -1,9 +1,8 @@
 import mongoose from "mongoose";
-
+import bcrypt from "bcrypt";
 const userSchema = mongoose.Schema({
     socialOnly : {type:Boolean,default:false},
     email:{type:String,required:true,unique:true},
-    id:{type:String,required:true,unique:true},
     username :{type:String,required:true,},
     userid:{type:String,required:true,unique:true},
     password:{type:String,required:true},
@@ -14,5 +13,11 @@ const userSchema = mongoose.Schema({
     likes:[{type:mongoose.Schema.Types.ObjectId,ref:"Video"}],
 
 });
+userSchema.pre('save',async function(){
+
+    this.password = await bcrypt.hash(this.password,5);
+});
+console.log(mongoose.models.User);
 const User = mongoose.model("User",userSchema);
+
 export default User;

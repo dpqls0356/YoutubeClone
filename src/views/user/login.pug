@@ -2,7 +2,7 @@ extends ../base
 
 block content
  div.accountformbox
-        form.accountform(action="")
+        form.accountform(action="",method)
             input(type="text", required, placeholder="아이디를 입력하시오",name="id")
             input(type="password", required, placeholder="비밀번호를 입력하시오",name="password")
             input(id = "joinBtn" type="submit",value="login")

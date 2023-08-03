@@ -2,13 +2,19 @@ extends ../base
 
 block content
     div.accountformbox
-        form.accountform(action="")
+        form.accountform(action="/join",method="POST")
             input(type="text", required, placeholder="이름을 입력하시오",name="username")
+            if idErrorMessage
+                div #{idErrorMessage}
             input(type="text", required, placeholder="아이디를 입력하시오",name="id")
+            if pwErrorMessage
+                div #{pwErrorMessage}
             input(type="password", required, placeholder="비밀번호를 입력하시오",name="password")
             input(type="password", required, placeholder="비밀번호를 입력하시오",name="checkingpassword")
+            if emailErrorMessage
+                div #{emailErrorMessage}
             input(type="email", required, placeholder="이메일을 입력하시오",name="email")
-            input( type="date",data-placeholder="생년월일",required)
+            input( type="date",data-placeholder="생년월일",required name="birth")
             input(id = "joinBtn" type="submit",value="join")
             button.kakao-btn
                 a(href="")

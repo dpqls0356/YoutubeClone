@@ -1,4 +1,4 @@
-.joinbox{
+.accountformbox{
     font-size: 14px;
     padding-top: 55px;
     width: 100%;
@@ -8,7 +8,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    .joinform{
+    .accountform{
         padding:30px 40px;
         border-radius: 20px;
         background-color: #F0F0F0;
@@ -71,7 +71,7 @@
         }
     }
 }
-.go-login{
+.go-login,.go-join{
     display: flex;
     justify-content: center;
     width: 100%;

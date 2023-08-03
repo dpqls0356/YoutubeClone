@@ -1,0 +1,16 @@
+extends ../base
+
+block content
+ div.accountformbox
+        form.accountform(action="")
+            input(type="text", required, placeholder="아이디를 입력하시오",name="id")
+            input(type="password", required, placeholder="비밀번호를 입력하시오",name="password")
+            input(id = "joinBtn" type="submit",value="login")
+            button.kakao-btn
+                a(href="")
+                    p Kakao로 로그인하기
+            button.gmail-btn
+                a(href="")
+                    p Gmail로 로그인하기
+        div.go-join
+            a(href="/join") 계정이 없으신가요 ? 계정 만들기 &rarr;

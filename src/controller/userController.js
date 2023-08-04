@@ -1,9 +1,7 @@
 import User from "../models/userModel.js";
+import bcrypt from "bcrypt";
 export const getJoin = (req,res) =>{
     return res.render("user/join");
-}
-export const getLogin = (req,res)=>{
-    return res.render("user/login");
 }
 export const postJoin = async(req,res)=>{
     const {username,id,password,checkingpassword,email,birth} =req.body;
@@ -28,4 +26,24 @@ export const postJoin = async(req,res)=>{
     });
     return res.redirect("user/login");
     
+}
+export const getLogin = (req,res)=>{
+    return res.render("user/login");
+}
+export const postLogin = async(req,res)=>{
+    const {id,password} = req.body;
+    const userExist = await User.findOne({userid:id});
+    if(!userExist){
+        res.render("user/login",{pageTitle:"Login",idErrorMessage:"존재하지않는 아이디입니다."});
+    }
+    else{
+        console.log(userExist.password,password);
+        if(!(await bcrypt.compare(password,userExist.password))){
+            res.render("user/login",{pageTitle:"Login",pwErrorMessage:"잘못된 비밀번호입니다."});
+        }
+        else{
+            res.redirect("/");
+            // 세션바꾸기s
+        }
+    }
 }

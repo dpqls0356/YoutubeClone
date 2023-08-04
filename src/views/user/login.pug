@@ -2,8 +2,12 @@ extends ../base
 
 block content
  div.accountformbox
-        form.accountform(action="",method)
+        form.accountform(action="/login",method="POST")
+            if idErrorMessage
+                div #{idErrorMessage}
             input(type="text", required, placeholder="아이디를 입력하시오",name="id")
+            if pwErrorMessage
+                div #{pwErrorMessage}
             input(type="password", required, placeholder="비밀번호를 입력하시오",name="password")
             input(id = "joinBtn" type="submit",value="login")
             button.kakao-btn

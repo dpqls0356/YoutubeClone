@@ -42,6 +42,7 @@ export const postLogin = async(req,res)=>{
         return res.render("user/login",{pageTitle:"Login",pwErrorMessage:"잘못된 비밀번호입니다."});
     }
     else{
+        //세션 초기화시킴
         req.session.loggedIn = true;
         req.session.user = userExist;
         return res.redirect("/");

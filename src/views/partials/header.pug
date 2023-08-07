@@ -11,16 +11,18 @@ header.header
             label(for="video-search-btn")
                 i(class="fa-solid fa-magnifying-glass") 
             input(id="video-search-btn" type="submit" style="display:none;")
-    if false
+    if loggedIn
         div.header-col.header-login
+            button
+                a(href="/logout") Logout
             button
                 a(href="") 
                     i(class="fa-xl fa-solid fa-video")
             button
                 a(href="") 
                     i(class="fa-xl fa-regular fa-bell")
-            button
-                img(src="", alt="")
+            button img
+                //- img(src="", alt="")
     else
         div.header-col.header-not-login 
             button

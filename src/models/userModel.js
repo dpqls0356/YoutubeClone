@@ -1,11 +1,12 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 const userSchema = mongoose.Schema({
+    avatarUrl : {type:String},
     socialOnly : {type:Boolean,default:false},
     email:{type:String,required:true,unique:true},
     username :{type:String,required:true,},
     userid:{type:String,required:true,unique:true},
-    password:{type:String,required:true},
+    password:{type:String,required:true,},
     birth:{type:Date},
     avatarUrl:{type:String},
     video:[{type:mongoose.Schema.Types.ObjectId,ref:"Video"}],

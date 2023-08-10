@@ -2,19 +2,24 @@ extends ../base
 
 block content
  div.accountformbox
+        if emailErrorMessage
+            span 해당 이메일로 가입된 계정이 존재합니다. 아이디와 비밀번호로 로그인하세요.
         form.accountform(action="/login",method="POST")
             if idErrorMessage
                 div #{idErrorMessage}
-            input(type="text", required, placeholder="아이디를 입력하시오",name="id")
+            input(type="text", placeholder="아이디를 입력하시오",name="id")
             if pwErrorMessage
                 div #{pwErrorMessage}
-            input(type="password", required, placeholder="비밀번호를 입력하시오",name="password")
+            input(type="password", placeholder="비밀번호를 입력하시오",name="password")
             input(id = "joinBtn" type="submit",value="login")
-            button.kakao-btn
+            div.kakao-btn
                 a(href="")
                     p Kakao로 로그인하기
-            button.gmail-btn
+            div.gmail-btn
                 a(href="")
                     p Gmail로 로그인하기
+            div.github-btn
+                a(href="/users/github/start")
+                    p Github으로 로그인하기
         div.go-join
             a(href="/join") 계정이 없으신가요 ? 계정 만들기 &rarr;

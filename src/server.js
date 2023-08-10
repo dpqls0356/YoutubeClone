@@ -33,10 +33,6 @@ app.use(session({
         mongoUrl:process.env.DB_URL
     })
 }))
-// app.use("/",(req,res,next)=>{
-//     console.log(req.session);
-//     next();
-// })
 
 // 세션과 관련된 코드보다 뒤에 와야 세션값을 받을 수 있음
 app.use(localsMiddleware);

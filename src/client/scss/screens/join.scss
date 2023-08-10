@@ -58,8 +58,11 @@
             display: none; // 유효값이 입력된 경우 before에 있는 것을 사라지게 한다. 즉, placeholder를 사라지게 한다.
         }
     }
-    button{
+    .kakao-btn,.gmail-btn,.github-btn{
         border:none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         width: 100%;
         height: 40px;;
         margin:10px 0px;
@@ -87,4 +90,8 @@
 }
 .kakao-btn{
     background-color: #FFEB3A;
+}
+.github-btn{
+    p{color: rgb(0, 0, 0);}
+    background-color: rgb(255, 255, 255);
 }

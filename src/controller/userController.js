@@ -1,6 +1,7 @@
 import User from "../models/userModel.js";
 import fetch from "node-fetch";
 import bcrypt from "bcrypt";
+import { config } from "dotenv";
 export const getJoin = (req,res) =>{
     return res.render("user/join");
 }
@@ -119,7 +120,7 @@ export const finishGithubLogin = async(req,res)=>{
                 }
                 else{
                     // 이미 계정이 있는 이메일이기때문에 다시 로그인 창으로 이동
-                    return res.render("/login",{emailErrorMessage:true})
+                    return res.render("/login",{emailErrorMessage:"동일한 이메일을 사용하는 계정이 이미 존재합니다."})
                 }
             }
             else{
@@ -169,5 +170,59 @@ function generateRandomString(length,idList) {
             return randomString;
         }
 
+    }
+}
+export const startKakaoLogin = async(req,res)=>{
+    const config = {
+        response_type:"code",
+        client_id:process.env.KAKAO_CLIENT_ID,
+        redirect_uri:process.env.KAKAO_REDIRECT_URL,
+    }
+    const params =new URLSearchParams(config).toString();
+    const baseUrl = `https://kauth.kakao.com/oauth/authorize?${params}`;
+    return res.redirect(baseUrl);
+}
+export const finishKakaoLogin = async(req,res)=>{
+    const config = {
+        grant_type:"authorization_code",
+        code: req.query.code,
+        client_id:process.env.KAKAO_CLIENT_ID,
+        redirect_uri:process.env.KAKAO_REDIRECT_URL,
+        client_secret:process.env.KAKAO_CLIENT_SECRET,
+    }
+    const params = new URLSearchParams(config).toString();
+    const baseUrl = `https://kauth.kakao.com/oauth/token?${params}`;
+    const json = await(
+        await fetch(baseUrl,{
+            method:"POST",
+        })
+    ).json();
+    const {access_token} = json;
+    // 이메일이랑 여러 데이터를 가져와야함 ...
+    const data = await (
+        await fetch(`https://kapi.kakao.com/v2/user/me`,{
+            method:"POST",
+            headers:{
+                Authorization: `Bearer ${access_token}`,
+                "Content-type": "application/x-www-form-urlencoded;charset=utf-8",
+            }
+        })
+    ).json();
+    // 계정넣기
+    if(data.kakao_account.email){
+        const user = await User.create({
+            socialOnly:true,
+            userid: data.id,
+            avatarUrl: data.properties.profile_image,
+            email: data.kakao_account.email,
+            username: data.properties.nickname,
+            password: data.id
+        });
+        req.session.user = user;
+        req.session.loggedIn = true;
+        return res.redirect("/");
+    }
+    else{
+        return res.render("/login",{emailErrorMessage:"해당 계정은 이메일 정보가 없습니다."});
     }
 }

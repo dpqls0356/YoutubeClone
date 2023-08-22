@@ -9,7 +9,7 @@ export const postJoin = async(req,res)=>{
     const {username,id,password,checkingpassword,email,birth} =req.body;
     // 아이디가 겹치는지
     // 아이디 또는 아이디가 겹치는지 알고싶으면 => exists({$of:[{username},{email}]})
-    const userExistById = await User.exists({userid:id});
+    const userExistById = await User.exists({userid:id,socialOnly:false});
     const pageTitle = "Join";
     if(userExistById){
         return res.status(400).render("user/join",{pageTitle,idErrorMessage:"중복된 아이디입니다..."});
@@ -104,30 +104,18 @@ export const finishGithubLogin = async(req,res)=>{
                 authorization:`token ${access_token}`
                 }
         })).json();
-        // console.log(userData,userEmail);
+        console.log(userData,userEmail);
         const emailObj = userEmail.find((email)=>email.primary===true&&email.verified===true);
         if(!(emailObj)){
-            return res.redirect("/");
+            return res.render("user/login",{emailErrorMessage:"해당 계정은 이메일 정보가 없습니다."});
         }
         else{
-            const existsUser = await User.findOne({email:emailObj.email});
-            if(existsUser){
-                if(existsUser.socialOnly===true){
-                    // 로그인 시키기
-                    req.session.user = existsUser;
-                    req.session.loggedIn=true;
-                    return res.redirect("/");
-                }
-                else{
-                    // 이미 계정이 있는 이메일이기때문에 다시 로그인 창으로 이동
-                    return res.render("/login",{emailErrorMessage:"동일한 이메일을 사용하는 계정이 이미 존재합니다."})
-                }
-            }
-            else{
+            const user = await User.findOne({email:emailObj.email});
+            if(!user){
                 const idList = await User.find({},'userid');
                 const randomId = generateRandomString(14,idList);
                 console.log(randomId);
-                const user = await User.create({
+                user = await User.create({
                     avatarUrl:userData.avatar_url,
                     socialOnly:true,
                     email:emailObj.email,
@@ -136,10 +124,13 @@ export const finishGithubLogin = async(req,res)=>{
                     userid:randomId,
                     password:userData.node_id,
                 });
-                req.session.loggedIn=true;
-                req.session.user =user;
-                return res.redirect("/");
             }
+            else if((user.socialOnly===false)||(String(user.userid)!==String(userData.id))){
+                return res.render("user/login",{emailErrorMessage:"동일한 이메일을 사용하는 계정이 이미 존재합니다."})
+            }
+            req.session.loggedIn=true;
+            req.session.user =user;
+            return res.redirect("/");
         }
         
     }
@@ -210,19 +201,32 @@ export const finishKakaoLogin = async(req,res)=>{
     ).json();
     // 계정넣기
     if(data.kakao_account.email){
-        const user = await User.create({
-            socialOnly:true,
-            userid: data.id,
-            avatarUrl: data.properties.profile_image,
-            email: data.kakao_account.email,
-            username: data.properties.nickname,
-            password: data.id
-        });
+        const user = await User.findOne({email:data.kakao_account.email});
+        if(!user){
+            user = await User.create({
+                socialOnly:true,
+                userid: data.id,
+                avatarUrl: data.properties.profile_image,
+                email: data.kakao_account.email,
+                username: data.properties.nickname,
+                password: data.id
+            });
+        }
+        else if((user.socialOnly===false)||(String(user.userid)!==String(data.id))){
+            return res.render("user/login",{emailErrorMessage:"동일한 이메일을 사용하는 계정이 이미 존재합니다."})
+        }
         req.session.user = user;
         req.session.loggedIn = true;
         return res.redirect("/");
     }
     else{
-        return res.render("/login",{emailErrorMessage:"해당 계정은 이메일 정보가 없습니다."});
+        return res.render("user/login",{emailErrorMessage:"해당 계정은 이메일 정보가 없습니다."});
     }
 }
+// 이메일0 + not social = 계정이 있는 이메일 완료
+// 이메일0 + social = 로그인 시키기 -> 연동을 무엇으로 시켰는지에 따라 달라짐 아이디값을 비교하면 되겟네
+// 이메일 x  = 새로 추가시키기 = 완료
+
+// 기존 : 메일의 유무만을 판단해서 일치하는 메일이 있으면 로그인이 가능하도록 함 -> 이 경우에 카카오를 이용해 가입했다가 이메일이 일치하는 다른 sns으로 로그인해도 로그인이 가능해져버림
+
+// 해결 -> sns측에서 아이디값을 주거나 랜덤으로 부여했던 아이디값이 일치해야만 로그인할 수 있도록 함 -> 엇 깃헙은 내가 랜덤값으로 줘버려서 id값 일치를 확인할 수 없음

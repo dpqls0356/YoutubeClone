@@ -3,7 +3,7 @@ extends ../base
 block content
     div.accountformbox
         if emailErrorMessage
-            span 해당 이메일로 가입된 계정이 존재합니다. 아이디와 비밀번호로 로그인하세요.
+            span=emailErrorMessage
         form.accountform(action="/login",method="POST")
             if idErrorMessage
                 div #{idErrorMessage}

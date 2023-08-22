@@ -8,8 +8,8 @@ export const getJoin = (req,res) =>{
 export const postJoin = async(req,res)=>{
     const {username,id,password,checkingpassword,email,birth} =req.body;
     // 아이디가 겹치는지
-    // 아이디 또는 아이디가 겹치는지 알고싶으면 => exists({$of:[{username},{email}]})
-    const userExistById = await User.exists({userid:id,socialOnly:false});
+    // 아이디 또는 이메일 겹치는지 알고싶으면 => exists({$of:[{username},{email}]})
+    const userExistById = await User.exists({userid:id});
     const pageTitle = "Join";
     if(userExistById){
         return res.status(400).render("user/join",{pageTitle,idErrorMessage:"중복된 아이디입니다..."});
@@ -26,7 +26,7 @@ export const postJoin = async(req,res)=>{
     await User.create({
         username,userid:id,password,email,birth
     });
-    return res.redirect("user/login");
+    return res.redirect("/login");
     
 }
 export const getLogin = (req,res)=>{
@@ -104,7 +104,6 @@ export const finishGithubLogin = async(req,res)=>{
                 authorization:`token ${access_token}`
                 }
         })).json();
-        console.log(userData,userEmail);
         const emailObj = userEmail.find((email)=>email.primary===true&&email.verified===true);
         if(!(emailObj)){
             return res.render("user/login",{emailErrorMessage:"해당 계정은 이메일 정보가 없습니다."});
@@ -114,8 +113,7 @@ export const finishGithubLogin = async(req,res)=>{
             if(!user){
                 const idList = await User.find({},'userid');
                 const randomId = generateRandomString(14,idList);
-                console.log(randomId);
-                user = await User.create({
+                const newuser = await User.create({
                     avatarUrl:userData.avatar_url,
                     socialOnly:true,
                     email:emailObj.email,
@@ -123,9 +121,13 @@ export const finishGithubLogin = async(req,res)=>{
                     // 자동으로 아이디와 패스워드를 생성시켜주는 걸 찾아보자
                     userid:randomId,
                     password:userData.node_id,
+                    socialRoute:"github",
                 });
+                req.session.loggedIn=true;
+                req.session.user =newuser;
+                return res.redirect("/");
             }
-            else if((user.socialOnly===false)||(String(user.userid)!==String(userData.id))){
+            else if(user.socialRoute!=="github"){
                 return res.render("user/login",{emailErrorMessage:"동일한 이메일을 사용하는 계정이 이미 존재합니다."})
             }
             req.session.loggedIn=true;
@@ -201,23 +203,33 @@ export const finishKakaoLogin = async(req,res)=>{
     ).json();
     // 계정넣기
     if(data.kakao_account.email){
-        const user = await User.findOne({email:data.kakao_account.email});
-        if(!user){
-            user = await User.create({
+        const checkID = await User.findOne({userid:data.id});
+        const checkEmail = await User.findOne({email:data.kakao_account.email});
+        console.log(checkEmail,checkID);
+        if(!checkEmail&&!checkID){
+            const newuser = await User.create({
                 socialOnly:true,
                 userid: data.id,
                 avatarUrl: data.properties.profile_image,
                 email: data.kakao_account.email,
                 username: data.properties.nickname,
-                password: data.id
+                password: data.id,
+                socialRoute:"kakao",
             });
+            req.session.user = newuser;
+            req.session.loggedIn = true;
+            return res.redirect("/");
         }
-        else if((user.socialOnly===false)||(String(user.userid)!==String(data.id))){
-            return res.render("user/login",{emailErrorMessage:"동일한 이메일을 사용하는 계정이 이미 존재합니다."})
+        else if(checkEmail&&checkEmail.socialRoute!=="kakao"){
+            return res.render("user/login",{emailErrorMessage:"동일한 이메일을 사용하는 계정이 이미 존재합니다."});
         }
-        req.session.user = user;
+        else if(checkID){
+            return res.render("user/login",{emailErrorMessage:"동일한 아이디를 사용하는 계정이 이미 존재합니다."});
+        }
+        req.session.user = checkEmail;
         req.session.loggedIn = true;
         return res.redirect("/");
+
     }
     else{
         return res.render("user/login",{emailErrorMessage:"해당 계정은 이메일 정보가 없습니다."});

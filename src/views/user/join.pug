@@ -1,7 +1,7 @@
 extends ../base
 
 block content
-    div.accountformbox
+    div.accountformbox.box
         form.accountform(action="/join",method="POST")
             input(type="text", required, placeholder="이름을 입력하시오",name="username")
             if idErrorMessage

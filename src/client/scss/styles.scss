@@ -5,7 +5,7 @@
 @import "./components/footer.scss";
 //screens
 @import "./screens/home.scss";
-@import "./screens/join.scss";
+@import "./screens/joinloginform.scss";
 *{
     box-sizing: border-box;
 }
@@ -22,4 +22,7 @@ main{
     max-height: max-content;
     padding-left: 65px;
     
+}
+.box{
+    padding-top:55px;
 }

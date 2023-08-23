@@ -223,7 +223,7 @@ export const finishKakaoLogin = async(req,res)=>{
         else if(checkEmail&&checkEmail.socialRoute!=="kakao"){
             return res.render("user/login",{emailErrorMessage:"동일한 이메일을 사용하는 계정이 이미 존재합니다."});
         }
-        else if(checkID){
+        else if(checkID&&checkEmail.socialRoute!=="kakao"){
             return res.render("user/login",{emailErrorMessage:"동일한 아이디를 사용하는 계정이 이미 존재합니다."});
         }
         req.session.user = checkEmail;

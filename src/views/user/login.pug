@@ -1,7 +1,7 @@
 extends ../base
 
 block content
-    div.accountformbox
+    div.accountformbox.box
         if emailErrorMessage
             span=emailErrorMessage
         form.accountform(action="/login",method="POST")

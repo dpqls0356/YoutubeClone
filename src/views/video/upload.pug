@@ -1,0 +1,23 @@
+extends ../base
+
+block content
+    div.box
+        span 채널 컨텐츠
+        div.video-upload-box
+            span 세부정보
+            form.video-upload-form(action="/video/upload",method="POST")
+                div
+                    input(type="file",required)
+                div 
+                    span 제목(필수 항목)
+                    input(type="text",placeholder="동영상을 설명하는 제목 추가",required)
+                div
+                    span 설명
+                    input(type="text",placeholder="시청자에게 동영상에 대해 설명해 주세요")
+                div 
+                    span 해시태그
+                    input(type="text",placeholder="해시태그를 입력해주세요")
+                div 
+                    span 썸네일
+                    input(type="file",required)
+        

@@ -5,19 +5,20 @@ block content
         span 채널 컨텐츠
         div.video-upload-box
             span 세부정보
-            form.video-upload-form(action="/video/upload",method="POST")
+            form.video-upload-form(action="/videos/upload",method="POST",enctype="multipart/form-data")
                 div
-                    input(type="file",required)
+                    input(name="video" type="file",required, accept="video/*") 
                 div 
                     span 제목(필수 항목)
-                    input(type="text",placeholder="동영상을 설명하는 제목 추가",required)
+                    input(name="title" type="text",placeholder="동영상을 설명하는 제목 추가",required)
                 div
                     span 설명
-                    input(type="text",placeholder="시청자에게 동영상에 대해 설명해 주세요")
+                    input(name="description" type="text",placeholder="시청자에게 동영상에 대해 설명해 주세요")
                 div 
                     span 해시태그
-                    input(type="text",placeholder="해시태그를 입력해주세요")
+                    input(name="hashtag" type="text",placeholder="해시태그를 입력해주세요")
                 div 
                     span 썸네일
-                    input(type="file",required)
+                    input(name="thumb" type="file",required,accept="image/*")
+                input(type="submit" value="업로드")
         

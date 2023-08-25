@@ -1,11 +1,12 @@
 extends base.pug
 include mixins/video-category
+include mixins/video
 block content
     div.video-category
         each category in ["전체","게임","음악","뉴스","뷰티 팁","액션 어드벤쳐 게임","요리","만화 영화","최근에 업로드된 영상"]
             +videoCategory(category)    
     div.view-thumb
-        if videos 
+        if videos !== [] 
             each video in videos
                 +video(video)
         else 

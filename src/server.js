@@ -39,4 +39,5 @@ app.use(localsMiddleware);
 app.use("/",rootRouter);
 app.use("/users",userRouter);
 app.use("/videos",videoRouter);
+app.use("/upload",express.static("upload"));
 app.listen(PORT,handleOpneServer);
